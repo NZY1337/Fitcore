@@ -2,7 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    PrimaryColumn,
+    PrimaryGeneratedColumn,
     UpdateDateColumn,
     AfterInsert,
     AfterRemove,
@@ -12,7 +12,7 @@ import { type ActivityLevel, type ActivityGoal, type TrainingGoalInput } from '.
 
 @Entity('user_profiles')
 export class UserProfile {
-    @PrimaryColumn('uuid')
+    @PrimaryGeneratedColumn('uuid')
     user_id: string;
 
     @Column({ type: 'text' })

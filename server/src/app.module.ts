@@ -7,6 +7,8 @@ import { UserProfileModule } from './user-profile/user-profile.module';
 import { UserProfile } from './user-profile/entities/user-profile.entity';
 import { SupabaseModule } from './supabase/supabase.module';
 import { FitnessMetricsModule } from './fitness-metrics/fitness-metrics.module';
+import { WorkoutLogsModule } from './workout-logs/workout-logs.module';
+import { WorkoutLog } from './workout-logs/entities/workout-log.entity';
 
 @Module({
     imports: [
@@ -15,11 +17,12 @@ import { FitnessMetricsModule } from './fitness-metrics/fitness-metrics.module';
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.LOCAL_DB_URL,
-            entities: [UserProfile],
+            entities: [UserProfile, WorkoutLog],
             synchronize: true,
         }),
         UserProfileModule,
         FitnessMetricsModule,
+        WorkoutLogsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

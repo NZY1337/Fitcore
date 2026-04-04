@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useAppContext } from '../../context/AppContext';
+import { Link } from 'react-router';
 
 export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { session } = useAppContext();
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -21,10 +24,20 @@ export default function Navbar() {
                     <a href="#preturi" className="hover:text-gray-500 transition-colors">Prețuri</a>
                 </div>
 
-                <div className="hidden md:block">
-                    <button className="bg-black text-white px-8 py-3 font-bold text-sm tracking-widest uppercase hover:bg-gray-800 transition-all">
-                        Începe Acum
-                    </button>
+                <div className="hidden md:flex items-center gap-4">
+                    {session ? (
+                        <Link to="/dashboard">
+                            <button className="bg-black text-white px-8 py-3 font-bold uppercase tracking-tighter text-sm hover:bg-[#DFFF00] hover:text-black transition-all transform  border-2 border-black">
+                                Dashboard
+                            </button>
+                        </Link>
+                    ) : (
+                        <Link to="/signup">
+                            <button className="bg-black text-white px-8 py-3 font-bold uppercase tracking-tighter text-sm hover:bg-[#DFFF00] hover:text-black transition-all transform  border-2 border-black">
+                                Începe Acum
+                            </button>
+                        </Link>
+                    )}
                 </div>
 
                 <button

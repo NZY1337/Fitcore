@@ -31,11 +31,14 @@ export default function Hero() {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="text-6xl md:text-8xl italic font-black uppercase tracking-tighter mb-8 leading-[0.9]"
                         >
-                            Nu doar <br />
-                            <span className="relative">
-                                Antrenamente
-                                <div className="absolute -bottom-2 left-0 w-full h-1 bg-black" />
-                            </span>
+                            <h2 className="text-4xl sm:text-3xl md:text-7xl font-black text-black leading-[0.95] uppercase italic mb-8">
+                                Nu doar <br className="hidden sm:block" />
+                                antrenament. <br className="hidden sm:block" />
+                                {/* Am schimbat text-transparent în text-black pentru a fi vizibil mereu */}
+                                <span className="bg-black text-white px-4 py-2 inline-block mt-2 sm:mt-0 transform -rotate-2">
+                                    Evoluție.
+                                </span>
+                            </h2>
                         </motion.h1>
 
                         <motion.p
