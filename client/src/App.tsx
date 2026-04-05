@@ -19,8 +19,7 @@ import AppLayout from "./layout/AppLayout";
 import Home from "./pages/Dashboard/Home";
 import Homepage from "./components/Homepage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import UserProfile from "./pages/Dashboard/UserProfile";
-
+import UserProfile from "./pages/Dashboard/UserProfile"; import WorkoutLogs from './pages/Dashboard/WorkoutLogs';
 export default function App() {
     return (
         <>
@@ -32,7 +31,8 @@ export default function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route element={<AppLayout />}>
                             <Route path="/dashboard" element={<Home />} />
-                            <Route path="/user-profile" element={<UserProfile />} />
+                            <Route path="/dashboard/user-profile" element={<UserProfile />} />
+                            <Route path="/dashboard/workout-logs" element={<WorkoutLogs />} />
 
                             {/* Others Page */}
                             <Route path="/profile" element={<UserProfiles />} />

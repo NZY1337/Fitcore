@@ -6,7 +6,7 @@ import {
     updateUserProfile,
     deleteUserProfile,
     type CreateUserProfileDto,
-} from '../services/user-profile/indes';
+} from '../services/user-profile';
 
 export const useUserProfile = () => {
     const { session } = useAppContext();
@@ -21,7 +21,7 @@ export const useUserProfile = () => {
         },
         enabled: !!token,
     });
- 
+
     const createUserProfileMutation = useMutation({
         mutationFn: (dto: CreateUserProfileDto) => {
             if (!token) throw new Error('No authentication token');
@@ -29,6 +29,7 @@ export const useUserProfile = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics'] });
         },
     });
 
@@ -39,6 +40,7 @@ export const useUserProfile = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics'] });
         },
     });
 
@@ -49,6 +51,7 @@ export const useUserProfile = () => {
         },
         onSuccess: () => {
             queryClient.removeQueries({ queryKey: ['userProfile'] });
+            queryClient.removeQueries({ queryKey: ['fitnessMetrics'] });
         },
     });
 
@@ -56,12 +59,12 @@ export const useUserProfile = () => {
         userProfile,
         isPending,
         error,
-        createUserProfile: createUserProfileMutation.mutate,
-        updateUserProfile: updateUserProfileMutation.mutate,
-        deleteUserProfile: deleteUserProfileMutation.mutate,
         isCreating: createUserProfileMutation.isPending,
         isUpdating: updateUserProfileMutation.isPending,
         isDeleting: deleteUserProfileMutation.isPending,
+        createUserProfile: createUserProfileMutation.mutate,
+        updateUserProfile: updateUserProfileMutation.mutate,
+        deleteUserProfile: deleteUserProfileMutation.mutate,
     };
 };
 

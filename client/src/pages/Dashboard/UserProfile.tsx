@@ -7,7 +7,8 @@ import Select from '../../components/form/Select';
 import Alert from '../../components/ui/alert/Alert';
 import Button from '../../components/ui/button/Button';
 import { useUserProfile } from '../../hooks/useUserProfile';
-import type { CreateUserProfileDto } from '../../services/user-profile/indes';
+import { useAutoDismiss } from '../../hooks/useAutoDismiss';
+import type { CreateUserProfileDto } from '../../services/user-profile';
 
 type FormState = {
     gender: '' | 'male' | 'female';
@@ -23,6 +24,19 @@ type FormState = {
 };
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
+
+// const initialFormState: FormState = {
+//     gender: 'male',
+//     weight_kg: '100',
+//     height_cm: '170',
+//     waist_cm: '100',
+//     neck_cm: '70',
+//     hip_cm: '100',
+//     date_of_birth: '1990-01-06',
+//     activity_level: 'sedentary',
+//     activity_goal: 'maintain',
+//     training_goal: 'strength',
+// };
 
 const initialFormState: FormState = {
     gender: '',
@@ -50,16 +64,18 @@ export default function UserProfile() {
         userProfile,
         isPending,
         error,
-        createUserProfile,
-        updateUserProfile,
         isCreating,
         isUpdating,
+        isDeleting,
+        createUserProfile,
+        updateUserProfile,
+        deleteUserProfile,
     } = useUserProfile();
 
     const [form, setForm] = useState<FormState>(initialFormState);
     const [errors, setErrors] = useState<FormErrors>({});
-    const [submitMessage, setSubmitMessage] = useState<string>('');
-    const [submitError, setSubmitError] = useState<string>('');
+    const [submitMessage, setSubmitMessage] = useAutoDismiss();
+    const [submitError, setSubmitError] = useAutoDismiss();
     const [isHydrated, setIsHydrated] = useState(false);
     const todayIso = new Date().toISOString().slice(0, 10);
 
@@ -84,6 +100,7 @@ export default function UserProfile() {
         setIsHydrated(true);
     }, [userProfile, isHydrated]);
 
+    console.log('userProfile', userProfile);
     const validate = (values: FormState): FormErrors => {
         const nextErrors: FormErrors = {};
 
@@ -192,6 +209,19 @@ export default function UserProfile() {
             onSuccess: () => setSubmitMessage('Profile created successfully.'),
             onError: (mutationError: unknown) => setSubmitError(getErrorMessage(mutationError)),
         });
+    };
+
+    const handleDeleteProfile = () => {
+        if (hasExistingProfile) {
+            deleteUserProfile(undefined, {
+                onSuccess: () => {
+                    setSubmitMessage('Profile deleted successfully.');
+                    setForm(initialFormState);
+                    setIsHydrated(false);
+                },
+                onError: (err: unknown) => setSubmitError(getErrorMessage(err)),
+            });
+        }
     };
 
     const isSubmitting = isCreating || isUpdating;
@@ -406,6 +436,13 @@ export default function UserProfile() {
                                 <Button disabled={isSubmitting}>
                                     {isSubmitting ? 'Saving...' : hasExistingProfile ? 'Update Profile' : 'Create Profile'}
                                 </Button>
+
+                                {hasExistingProfile && (
+                                    <Button disabled={isDeleting} variant="outline" className="ml-3" onClick={handleDeleteProfile}>
+                                        {isDeleting && 'Deleting...'}
+                                        {hasExistingProfile && !isDeleting && 'Delete Profile'}
+                                    </Button>
+                                )}
                             </div>
                         </Form>
                     </div>

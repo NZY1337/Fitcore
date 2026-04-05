@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router";
 // Assume these icons are imported from an icon library
 import {
     BoxCubeIcon,
+    BoltIcon,
     CalenderIcon,
     ChevronDownIcon,
     GridIcon,
@@ -15,7 +16,6 @@ import {
     TableIcon,
     UserCircleIcon,
 } from "../icons";
-import sentioLogoDark from "../assets/sentio3.svg";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
 
@@ -30,18 +30,24 @@ const navItems: NavItem[] = [
     {
         icon: <GridIcon />,
         name: "Dashboard",
-        subItems: [{ name: "User Profile", path: "/user-profile", pro: false }],
+        path: "/dashboard",
+        // subItems: [{ name: "User Profile", path: "/user-profile", pro: false }],
     },
-    // {
-    //     icon: <CalenderIcon />,
-    //     name: "Calendar",
-    //     path: "/calendar",
-    // },
-    // {
-    //     icon: <UserCircleIcon />,
-    //     name: "User Profile",
-    //     path: "/profile",
-    // },
+    {
+        icon: <CalenderIcon />,
+        name: "User Profile",
+        path: "/dashboard/user-profile",
+    },
+    {
+        icon: <BoltIcon />,
+        name: "Workout Logs",
+        path: "/dashboard/workout-logs",
+    },
+    {
+        icon: <UserCircleIcon />,
+        name: "Profile",
+        path: "/profile",
+    },
     // {
     //     name: "Forms",
     //     icon: <ListIcon />,
@@ -52,14 +58,14 @@ const navItems: NavItem[] = [
     //     icon: <TableIcon />,
     //     subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
     // },
-    // {
-    //     name: "Pages",
-    //     icon: <PageIcon />,
-    //     subItems: [
-    //         { name: "Blank Page", path: "/blank", pro: false },
-    //         { name: "404 Error", path: "/error-404", pro: false },
-    //     ],
-    // },
+    {
+        name: "Pages",
+        icon: <PageIcon />,
+        subItems: [
+            { name: "Blank Page", path: "/blank", pro: false },
+            { name: "404 Error", path: "/error-404", pro: false },
+        ],
+    },
 ];
 
 const othersItems: NavItem[] = [

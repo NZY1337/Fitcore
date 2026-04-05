@@ -39,9 +39,7 @@ const addUserProfile = async (token: string, dto: CreateUserProfileDto) => {
         body: JSON.stringify(dto),
     })
 
-    if (!response.ok) {
-        throw new Error(await getErrorMessageFromResponse(response));
-    }
+    if (!response.ok) throw new Error(await getErrorMessageFromResponse(response));
     return response.json();
 }
 
@@ -51,6 +49,7 @@ const getUserProfile = async (token: string) => {
             Authorization: `Bearer ${token}`,
         },
     });
+
     if (!response.ok) throw new Error(await getErrorMessageFromResponse(response));
     return response.json();
 };
