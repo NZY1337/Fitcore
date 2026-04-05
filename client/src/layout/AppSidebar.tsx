@@ -30,36 +30,36 @@ const navItems: NavItem[] = [
     {
         icon: <GridIcon />,
         name: "Dashboard",
-        subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+        subItems: [{ name: "User Profile", path: "/user-profile", pro: false }],
     },
-    {
-        icon: <CalenderIcon />,
-        name: "Calendar",
-        path: "/calendar",
-    },
-    {
-        icon: <UserCircleIcon />,
-        name: "User Profile",
-        path: "/profile",
-    },
-    {
-        name: "Forms",
-        icon: <ListIcon />,
-        subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-    },
-    {
-        name: "Tables",
-        icon: <TableIcon />,
-        subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
-    },
-    {
-        name: "Pages",
-        icon: <PageIcon />,
-        subItems: [
-            { name: "Blank Page", path: "/blank", pro: false },
-            { name: "404 Error", path: "/error-404", pro: false },
-        ],
-    },
+    // {
+    //     icon: <CalenderIcon />,
+    //     name: "Calendar",
+    //     path: "/calendar",
+    // },
+    // {
+    //     icon: <UserCircleIcon />,
+    //     name: "User Profile",
+    //     path: "/profile",
+    // },
+    // {
+    //     name: "Forms",
+    //     icon: <ListIcon />,
+    //     subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    // },
+    // {
+    //     name: "Tables",
+    //     icon: <TableIcon />,
+    //     subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+    // },
+    // {
+    //     name: "Pages",
+    //     icon: <PageIcon />,
+    //     subItems: [
+    //         { name: "Blank Page", path: "/blank", pro: false },
+    //         { name: "404 Error", path: "/error-404", pro: false },
+    //     ],
+    // },
 ];
 
 const othersItems: NavItem[] = [
@@ -276,30 +276,48 @@ const AppSidebar: React.FC = () => {
     );
 
     return (
-        <aside
-            className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+        <aside className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
         ${isExpanded || isMobileOpen
+                ? "w-[290px]"
+                : isHovered
                     ? "w-[290px]"
-                    : isHovered
-                        ? "w-[290px]"
-                        : "w-[90px]"
-                }
+                    : "w-[90px]"
+            }
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0`}
             onMouseEnter={() => !isExpanded && setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <div
-                className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
-                    }`}
-            >
+            onMouseLeave={() => setIsHovered(false)}>
+            {/* <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"}`}> */}
+            <div className={`py-8 flex`}>
                 <Link to="/">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
-                            <p className="text-gray-800 dark:text-white font-bold tracking-widest">FLEXIFY</p>
+                            {/* <p className="text-gray-800 dark:text-white font-bold tracking-widest">FLEXIFY</p> */}
+                            <div className="flex flex-col items-center max-w-xs">
+                                <Link to="/" className="block mb-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-10 h-10 bg-black dark:bg-[#DFFF00] flex items-center justify-center">
+                                            <span className="text-[#DFFF00] dark:text-black font-black text-2xl italic">
+                                                F
+                                            </span>
+                                        </div>
+                                        <span className="font-black text-2xl tracking-tighter text-black dark:text-white uppercase italic">
+                                            FitCore
+                                        </span>
+                                    </div>
+                                </Link>
+                            </div>
                         </>
                     ) : (
-                        <p className="text-gray-800 dark:text-white font-bold tracking-widest">FEXIFY</p>
+                        <div className="flex flex-col items-center max-w-xs">
+                            <Link to="/" className="block mb-4">
+                                <div className="w-10 h-10 bg-black dark:bg-[#DFFF00] flex items-center justify-center">
+                                    <span className="text-[#DFFF00] dark:text-black font-black text-2xl italic">
+                                        F
+                                    </span>
+                                </div>
+                            </Link>
+                        </div>
                     )}
                 </Link>
             </div>
@@ -321,7 +339,8 @@ const AppSidebar: React.FC = () => {
                             </h2>
                             {renderMenuItems(navItems, "main")}
                         </div>
-                        <div className="">
+                        {/* OTHERS */}
+                        {/* <div className="">
                             <h2
                                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
                                     ? "lg:justify-center"
@@ -335,7 +354,7 @@ const AppSidebar: React.FC = () => {
                                 )}
                             </h2>
                             {renderMenuItems(othersItems, "others")}
-                        </div>
+                        </div> */}
                     </div>
                 </nav>
                 {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}

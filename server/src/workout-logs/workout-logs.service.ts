@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WorkoutLog } from './entities/workout-log.entity';
@@ -18,15 +18,20 @@ export class WorkoutLogsService {
     async findAll(userId: string, trainingGoal?: TrainingGoalInput) {
         const logs = await this.repo.findBy({ user_id: userId });
 
-        return logs.map(log => {
-            const oneRepMax = calculateOneRepMax(log.weight_kg, log.reps);
-            const volume = calculateVolume({ sets: log.sets, reps: log.reps, weightKg: log.weight_kg });
-            const workingWeight = trainingGoal
-                ? calculateWorkingWeight({ oneRepMax, trainingGoal })
-                : undefined;
+        try {
+            return logs.map(log => {
+                const oneRepMax = calculateOneRepMax(log.weight_kg, log.reps);
+                const volume = calculateVolume({ sets: log.sets, reps: log.reps, weightKg: log.weight_kg });
+                const workingWeight = trainingGoal
+                    ? calculateWorkingWeight({ oneRepMax, trainingGoal })
+                    : undefined;
 
-            return { ...log, oneRepMax, volume, workingWeight };
-        });
+                return { ...log, oneRepMax, volume, workingWeight };
+            });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Invalid workout log input';
+            throw new BadRequestException(message);
+        }
     }
 
     async remove(userId: string, logId: string): Promise<void> {

@@ -79,16 +79,16 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
                     </button>
 
                     <Link to="/" className="lg:hidden">
-                        <img
-                            className="dark:hidden"
-                            src="./images/logo/logo.svg"
-                            alt="Logo"
-                        />
-                        <img
-                            className="hidden dark:block"
-                            src="./images/logo/logo-dark.svg"
-                            alt="Logo"
-                        />
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-black dark:bg-[#DFFF00] flex items-center justify-center">
+                                <span className="text-[#DFFF00] dark:text-black font-black text-2xl italic">
+                                    F
+                                </span>
+                            </div>
+                            <span className="font-black text-2xl tracking-tighter text-black dark:text-white uppercase italic">
+                                FitCore
+                            </span>
+                        </div>
                     </Link>
 
                     <button

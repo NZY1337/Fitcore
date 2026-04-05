@@ -19,6 +19,7 @@ import AppLayout from "./layout/AppLayout";
 import Home from "./pages/Dashboard/Home";
 import Homepage from "./components/Homepage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import UserProfile from "./pages/Dashboard/UserProfile";
 
 export default function App() {
     return (
@@ -31,6 +32,7 @@ export default function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route element={<AppLayout />}>
                             <Route path="/dashboard" element={<Home />} />
+                            <Route path="/user-profile" element={<UserProfile />} />
 
                             {/* Others Page */}
                             <Route path="/profile" element={<UserProfiles />} />
