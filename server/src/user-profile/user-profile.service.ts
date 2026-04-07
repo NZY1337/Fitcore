@@ -26,7 +26,7 @@ export class UserProfileService {
                 gender: profile.gender,
             });
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Invalid profile measurements';
+            const message = error instanceof Error && error.message;
             throw new BadRequestException(message);
         }
     }

@@ -8,7 +8,7 @@ export const useFitnessMetrics = () => {
     const token = session?.access_token;
 
     const { data: fitnessMetrics, isPending, error } = useQuery({
-        queryKey: ['fitnessMetrics'],
+        queryKey: ['fitnessMetrics', token],
         queryFn: () => {
             if (!token) throw new Error('No authentication token');
             return getFitnessMetrics(token);

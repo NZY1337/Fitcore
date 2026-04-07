@@ -1,5 +1,5 @@
 {
-  "name": "Sentio",
+  "name": "fitapp",
   "private": true,
   "version": "2.1.0",
   "type": "module",
@@ -57,6 +57,7 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@tailwindcss/postcss": "^4.0.8",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.4.3",

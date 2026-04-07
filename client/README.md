@@ -1,197 +1,90 @@
-# Sentio React - Free React Tailwind Admin Dashboard Template
-
-Sentio is a free and open-source admin dashboard template built on **React and Tailwind CSS**, providing developers
-with everything they need to create a comprehensive, data-driven back-end,
-dashboard, or admin panel solution for upcoming web projects.
-
-With Sentio, you get access to all the necessary dashboard UI components, elements, and pages required to build a
-feature-rich and complete dashboard or admin panel. Whether you're building dashboard or admin panel for a complex web
-application or a simple website, Sentio is the perfect solution to help you get up and running quickly.
-
-![Sentio React.js Dashboard Preview](./banner.png)
-
-## Overview
-
-Sentio provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and
-control panels. It's built on:
-
-- React 19
-- TypeScript
-- Tailwind CSS v4
-
-### Quick Links
-
-- [✨ Visit Website](https://Sentio.com)
-- [📄 Documentation](https://Sentio.com/docs)
-- [⬇️ Download](https://Sentio.com/download)
-- [🖌️ Figma Design File (Community Edition)](https://www.figma.com/community/file/1214477970819985778)
-- [⚡ Get PRO Version](https://Sentio.com/pricing)
-
-### Demos
-
-- [Free Version](https://free-react-demo.Sentio.com/)
-- [Pro Version](https://react-demo.Sentio.com)
-
-### Other Versions
-
-- [HTML Version](https://github.com/Sentio/Sentio-free-tailwind-dashboard-template)
-- [Next.js Version](https://github.com/Sentio/free-nextjs-admin-dashboard)
-- [Vue.js Version](https://github.com/Sentio/vue-tailwind-admin-dashboard)
-- [Angular Version](https://github.com/Sentio/free-angular-tailwind-dashboard)
-- [Laravel Version](https://github.com/Sentio/Sentio-laravel)
-
-## Installation
-
-### Prerequisites
-
-To get started with Sentio, ensure you have the following prerequisites installed and set up:
-
-- Node.js 18.x or later (recommended to use Node.js 20.x or later)
-
-### Cloning the Repository
-
-Clone the repository using the following command:
-
-```bash
-git clone https://github.com/Sentio/free-react-tailwind-admin-dashboard.git
-```
-
-> Windows Users: place the repository near the root of your drive if you face issues while cloning.
-
-1. Install dependencies:
-
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-2. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-## Components
-
-Sentio is a pre-designed starting point for building a web-based dashboard using React.js and Tailwind CSS. The
-template includes:
-
-- Sophisticated and accessible sidebar
-- Data visualization components
-- Prebuilt profile management and 404 page
-- Tables and Charts(Line and Bar)
-- Authentication forms and input elements
-- Alerts, Dropdowns, Modals, Buttons and more
-- FAQ & Accordion, Testimonials, and Carousels
-- Can't forget Dark Mode 🕶️
-
-All components are built with React and styled using Tailwind CSS for easy customization.
-
-## Feature Comparison
-
-### Free Version
-
-- 1 Unique Dashboard
-- 35+ dashboard components
-- 50+ UI elements
-- Basic Figma design files
-- Community support
-
-### Pro Version
-
-- 7 Unique Dashboards: Analytics, Ecommerce, Marketing, CRM, SaaS, Stocks, Logistics (more coming soon)
-- 500+ dashboard components and UI elements
-- Complete Figma design file
-- Email support
-
-To learn more about pro version features and pricing, visit our [pricing page](https://Sentio.com/pricing).
-
-## Changelog
-
-### Version 2.1.0 - [Dec 30, 2025]
-
-- Resolved Date Picker positioning and input issues in Charts.
-
-### Version 2.0.2 - [March 25, 2025]
-
-- Upgraded to React 19
-- Included overrides for packages to prevent peer dependency errors.
-- Migrated from react-flatpickr to flatpickr package for React 19 support
-
-### Version 2.0.1 - [February 27, 2025]
-
-#### Update Overview
-
-- Upgraded to Tailwind CSS v4 for better performance and efficiency.
-- Updated class usage to match the latest syntax and features.
-- Replaced deprecated class and optimized styles.
-
-#### Next Steps
-
-- Run npm install or yarn install to update dependencies.
-- Check for any style changes or compatibility issues.
-- Refer to the Tailwind CSS v4 [Migration Guide](https://tailwindcss.com/docs/upgrade-guide) on this release. if needed.
-- This update keeps the project up to date with the latest Tailwind improvements. 🚀
-
-### Version 2.0.0 - [February 2025]
-
-A major update with comprehensive redesign and modern React patterns implementation.
-
-#### Major Improvements
-
-- Complete UI redesign with modern React patterns
-- New features: collapsible sidebar, chat, and calendar
-- Improved performance and accessibility
-- Updated data visualization using ApexCharts
-
-#### Key Features
-
-- Redesigned dashboards (Ecommerce, Analytics, Marketing, CRM)
-- Enhanced navigation with React Router integration
-- Advanced tables with sorting and filtering
-- Calendar with drag-and-drop support
-- New UI components and improved existing ones
-
-#### Breaking Changes
-
-- Updated sidebar component API
-- Migrated charts to ApexCharts
-- Revised authentication system
-
-[Read more](https://Sentio.com/docs/update-logs/react) on this release.
-
-### Version 1.3.7 - [June 20, 2024]
-
-#### Enhancements
-
-1. Remove Repetition of DefaultLayout in every Pages
-2. Add ClickOutside Component for reduce repeated functionality in Header Message, Notification and User Dropdowns.
-
-### Version 1.3.6 - [Jan 31, 2024]
-
-#### Enhancements
-
-1. Integrate flatpickr in [Date Picker/Form Elements]
-2. Change color after select an option [Select Element/Form Elements].
-3. Make it functional [Multiselect Dropdown/Form Elements].
-4. Make best value editable [Pricing Table One/Pricing Table].
-5. Rearrange Folder structure.
-
-### Version 1.2.0 - [Apr 28, 2023]
-
-- Add Typescript in Sentio React.
-
-### Version 1.0.0 - Initial Release - [Mar 13, 2023]
-
-- Initial release of Sentio React.
-
-## License
-
-Sentio React.js Free Version is released under the MIT License.
-
-## Support
-
-If you find this project helpful, please consider giving it a star on GitHub. Your support helps us continue developing
-and maintaining this template.
+# workout_log query
+
+WITH uid AS (SELECT 'MY_CUSTOMER_ID'::uuid AS val)
+INSERT INTO workout_logs (id, user_id, exercise, sets, reps, weight_kg, created_at, updated_at)
+SELECT gen_random_uuid(), uid.val, d.exercise, d.sets, d.reps, d.weight_kg, d.ts, NOW()
+FROM uid,
+(VALUES
+  -- Day -16: Chest (grupă mare) + Triceps (grupă mică)
+  ('Bench Press',               4, 8,  60.0,  NOW() - INTERVAL '16 days'),
+  ('Incline Dumbbell Press',    4, 10, 22.5,  NOW() - INTERVAL '16 days'),
+  ('Cable Flye',                3, 12, 15.0,  NOW() - INTERVAL '16 days'),
+  ('Dips',                      3, 8,  75.0,  NOW() - INTERVAL '16 days'),
+  ('Tricep Pushdown',           4, 12, 20.0,  NOW() - INTERVAL '16 days'),
+  ('Skull Crushers',            3, 10, 25.0,  NOW() - INTERVAL '16 days'),
+  ('Close Grip Bench Press',    3, 8,  50.0,  NOW() - INTERVAL '16 days'),
+  ('Overhead Tricep Extension', 3, 12, 15.0,  NOW() - INTERVAL '16 days'),
+
+  -- Day -14: Back (grupă mare) + Biceps (grupă mică)
+  ('Deadlift',                  3, 5,  100.0, NOW() - INTERVAL '14 days'),
+  ('Barbell Row',               4, 8,  60.0,  NOW() - INTERVAL '14 days'),
+  ('Pull-up',                   4, 8,  75.0,  NOW() - INTERVAL '14 days'),
+  ('Lat Pulldown',              3, 12, 55.0,  NOW() - INTERVAL '14 days'),
+  ('Barbell Curl',              4, 10, 30.0,  NOW() - INTERVAL '14 days'),
+  ('Hammer Curl',               3, 12, 15.0,  NOW() - INTERVAL '14 days'),
+  ('Incline Dumbbell Curl',     3, 10, 12.5,  NOW() - INTERVAL '14 days'),
+  ('Concentration Curl',        3, 12, 10.0,  NOW() - INTERVAL '14 days'),
+
+  -- Day -12: Legs (grupă mare) + Abs (grupă mică)
+  ('Squat',                     5, 5,  80.0,  NOW() - INTERVAL '12 days'),
+  ('Romanian Deadlift',         3, 10, 70.0,  NOW() - INTERVAL '12 days'),
+  ('Leg Press',                 4, 12, 120.0, NOW() - INTERVAL '12 days'),
+  ('Lunges',                    3, 10, 20.0,  NOW() - INTERVAL '12 days'),
+  ('Cable Crunch',              4, 15, 25.0,  NOW() - INTERVAL '12 days'),
+  ('Russian Twist',             3, 20, 10.0,  NOW() - INTERVAL '12 days'),
+  ('Weighted Sit-up',           3, 15, 10.0,  NOW() - INTERVAL '12 days'),
+  ('Leg Raise with Weight',     3, 12, 5.0,   NOW() - INTERVAL '12 days'),
+
+  -- Day -10: Shoulders (grupă mare) + Triceps (grupă mică)
+  ('Overhead Press',            4, 8,  40.0,  NOW() - INTERVAL '10 days'),
+  ('Lateral Raise',             4, 15, 8.0,   NOW() - INTERVAL '10 days'),
+  ('Front Raise',               3, 12, 10.0,  NOW() - INTERVAL '10 days'),
+  ('Face Pull',                 3, 15, 15.0,  NOW() - INTERVAL '10 days'),
+  ('Tricep Pushdown',           4, 12, 22.5,  NOW() - INTERVAL '10 days'),
+  ('Skull Crushers',            3, 10, 27.5,  NOW() - INTERVAL '10 days'),
+  ('Close Grip Bench Press',    3, 8,  52.5,  NOW() - INTERVAL '10 days'),
+  ('Overhead Tricep Extension', 3, 12, 17.5,  NOW() - INTERVAL '10 days'),
+
+  -- Day -8: Chest + Triceps (progresie)
+  ('Bench Press',               4, 8,  62.5,  NOW() - INTERVAL '8 days'),
+  ('Incline Dumbbell Press',    4, 10, 24.0,  NOW() - INTERVAL '8 days'),
+  ('Cable Flye',                3, 12, 17.5,  NOW() - INTERVAL '8 days'),
+  ('Dips',                      3, 8,  75.0,  NOW() - INTERVAL '8 days'),
+  ('Tricep Pushdown',           4, 12, 22.5,  NOW() - INTERVAL '8 days'),
+  ('Skull Crushers',            3, 10, 27.5,  NOW() - INTERVAL '8 days'),
+  ('Close Grip Bench Press',    3, 8,  52.5,  NOW() - INTERVAL '8 days'),
+  ('Overhead Tricep Extension', 3, 12, 17.5,  NOW() - INTERVAL '8 days'),
+
+  -- Day -6: Back + Biceps (progresie)
+  ('Deadlift',                  3, 5,  105.0, NOW() - INTERVAL '6 days'),
+  ('Barbell Row',               4, 8,  62.5,  NOW() - INTERVAL '6 days'),
+  ('Pull-up',                   4, 9,  75.0,  NOW() - INTERVAL '6 days'),
+  ('Lat Pulldown',              3, 12, 57.5,  NOW() - INTERVAL '6 days'),
+  ('Barbell Curl',              4, 10, 32.5,  NOW() - INTERVAL '6 days'),
+  ('Hammer Curl',               3, 12, 16.0,  NOW() - INTERVAL '6 days'),
+  ('Incline Dumbbell Curl',     3, 10, 13.0,  NOW() - INTERVAL '6 days'),
+  ('Concentration Curl',        3, 12, 11.0,  NOW() - INTERVAL '6 days'),
+
+  -- Day -4: Legs + Abs (progresie)
+  ('Squat',                     5, 5,  82.5,  NOW() - INTERVAL '4 days'),
+  ('Romanian Deadlift',         3, 10, 72.5,  NOW() - INTERVAL '4 days'),
+  ('Leg Press',                 4, 12, 125.0, NOW() - INTERVAL '4 days'),
+  ('Lunges',                    3, 10, 22.5,  NOW() - INTERVAL '4 days'),
+  ('Cable Crunch',              4, 15, 27.5,  NOW() - INTERVAL '4 days'),
+  ('Russian Twist',             3, 20, 12.0,  NOW() - INTERVAL '4 days'),
+  ('Weighted Sit-up',           3, 15, 12.0,  NOW() - INTERVAL '4 days'),
+  ('Leg Raise with Weight',     3, 12, 7.5,   NOW() - INTERVAL '4 days'),
+
+  -- Day -2: Shoulders + Triceps (progresie)
+  ('Overhead Press',            4, 8,  42.5,  NOW() - INTERVAL '2 days'),
+  ('Lateral Raise',             4, 15, 9.0,   NOW() - INTERVAL '2 days'),
+  ('Front Raise',               3, 12, 11.0,  NOW() - INTERVAL '2 days'),
+  ('Face Pull',                 3, 15, 17.5,  NOW() - INTERVAL '2 days'),
+  ('Tricep Pushdown',           4, 12, 25.0,  NOW() - INTERVAL '2 days'),
+  ('Skull Crushers',            3, 10, 30.0,  NOW() - INTERVAL '2 days'),
+  ('Close Grip Bench Press',    3, 8,  55.0,  NOW() - INTERVAL '2 days'),
+  ('Overhead Tricep Extension', 3, 12, 20.0,  NOW() - INTERVAL '2 days')
+) AS d(exercise, sets, reps, weight_kg, ts);
+
+https://www.reddit.com/r/workout/comments/1ky6j1c/what_features_do_you_think_a_great_fitness/
+https://www.quora.com/What-are-the-best-and-unique-features-that-a-fitness-app-can-have

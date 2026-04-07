@@ -14,7 +14,7 @@ export const useUserProfile = () => {
     const token = session?.access_token;
 
     const { data: userProfile, isPending, error } = useQuery({
-        queryKey: ['userProfile'],
+        queryKey: ['userProfile', token],
         queryFn: () => {
             if (!token) throw new Error('No authentication token');
             return getUserProfile(token);
@@ -28,8 +28,8 @@ export const useUserProfile = () => {
             return addUserProfile(token, dto);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics'] });
+            queryClient.invalidateQueries({ queryKey: ['userProfile', token] });
+            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics', token] });
         },
     });
 
@@ -39,8 +39,8 @@ export const useUserProfile = () => {
             return updateUserProfile(token, dto);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics'] });
+            queryClient.invalidateQueries({ queryKey: ['userProfile', token] });
+            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics', token] });
         },
     });
 
@@ -50,15 +50,15 @@ export const useUserProfile = () => {
             return deleteUserProfile(token);
         },
         onSuccess: () => {
-            queryClient.removeQueries({ queryKey: ['userProfile'] });
-            queryClient.removeQueries({ queryKey: ['fitnessMetrics'] });
+            queryClient.invalidateQueries({ queryKey: ['userProfile', token] });
+            queryClient.invalidateQueries({ queryKey: ['fitnessMetrics', token] });
         },
     });
 
     return {
         userProfile,
-        isPending,
         error,
+        isPending,
         isCreating: createUserProfileMutation.isPending,
         isUpdating: updateUserProfileMutation.isPending,
         isDeleting: deleteUserProfileMutation.isPending,
