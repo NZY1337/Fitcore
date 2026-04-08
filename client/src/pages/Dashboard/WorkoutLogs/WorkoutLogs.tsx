@@ -1,16 +1,18 @@
 import { useState, useMemo } from 'react';
-import PageMeta from '../../components/common/PageMeta';
-import Form from '../../components/form/Form';
-import Input from '../../components/form/input/InputField';
-import Label from '../../components/form/Label';
-import Button from '../../components/ui/button/Button';
-import Alert from '../../components/ui/alert/Alert';
-import { useWorkoutLogs } from '../../hooks/useWorkoutLogs';
-import { useAutoDismiss } from '../../hooks/useAutoDismiss';
-import type { CreateWorkoutLogDto, WorkoutLog } from '../../services/workout-logs';
+import Metrics from '../../../components/ecommerce/FitnessMetrics/Metrics';
+import Macros from '../../../components/ecommerce/FitnessMetrics/Macros';
+import PageMeta from '../../../components/common/PageMeta';
+import Form from '../../../components/form/Form';
+import Input from '../../../components/form/input/InputField';
+import Label from '../../../components/form/Label';
+import Button from '../../../components/ui/button/Button';
+import Alert from '../../../components/ui/alert/Alert';
+import { useWorkoutLogs } from '../../../hooks/useWorkoutLogs';
+import { useAutoDismiss } from '../../../hooks/useAutoDismiss';
+import type { CreateWorkoutLogDto, WorkoutLog } from '../../../services/workout-logs';
 import { validateWorkoutLog } from './workoutLogs.validation';
 import type { WorkoutLogFormState as FormState, WorkoutLogFormErrors as FormErrors } from './workoutLogs.validation';
-import useDebounce from '../../hooks/useDebounce';
+import useDebounce from '../../../hooks/useDebounce';
 
 const initialFormState: FormState = {
     exercise: '',
@@ -278,7 +280,7 @@ export default function WorkoutLogs() {
                     </div>
                 </div>
                 {/* Log Form */}
-                <div className="col-span-12 xl:col-span-5">
+                <div className="col-span-12 xl:col-span-5 flex flex-col gap-4 md:gap-6">
                     <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
                         <div className="mb-6">
                             <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Log a Set</h2>
@@ -364,6 +366,9 @@ export default function WorkoutLogs() {
                             </div>
                         </Form>
                     </div>
+
+                    <Metrics />
+                    <Macros />
                 </div>
             </div>
         </>

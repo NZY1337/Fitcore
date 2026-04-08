@@ -1,4 +1,4 @@
-import FitnessMetrics from "../../components/ecommerce/FitnessMetrics";
+import FitnessMetrics from "../../components/ecommerce/FitnessMetrics/FitnessMetrics";
 
 import PageMeta from "../../components/common/PageMeta";
 

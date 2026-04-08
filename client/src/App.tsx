@@ -19,7 +19,7 @@ import AppLayout from "./layout/AppLayout";
 import Home from "./pages/Dashboard/Home";
 import Homepage from "./components/Homepage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import UserProfile from "./pages/Dashboard/UserProfile"; import WorkoutLogs from './pages/Dashboard/WorkoutLogs';
+import UserProfile from "./pages/Dashboard/UserProfile/UserProfile"; import WorkoutLogs from './pages/Dashboard/WorkoutLogs/WorkoutLogs';
 export default function App() {
     return (
         <>

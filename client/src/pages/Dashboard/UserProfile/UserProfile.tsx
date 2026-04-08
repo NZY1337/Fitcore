@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import PageMeta from '../../components/common/PageMeta';
-import Form from '../../components/form/Form';
-import Input from '../../components/form/input/InputField';
-import Label from '../../components/form/Label';
-import Select from '../../components/form/Select';
-import Alert from '../../components/ui/alert/Alert';
-import Button from '../../components/ui/button/Button';
-import { useUserProfile } from '../../hooks/useUserProfile';
-import { useAutoDismiss } from '../../hooks/useAutoDismiss';
-import type { CreateUserProfileDto } from '../../services/user-profile';
+import PageMeta from '../../../components/common/PageMeta';
+import Form from '../../../components/form/Form';
+import Input from '../../../components/form/input/InputField';
+import Label from '../../../components/form/Label';
+import Select from '../../../components/form/Select';
+import Alert from '../../../components/ui/alert/Alert';
+import Button from '../../../components/ui/button/Button';
+import { useUserProfile } from '../../../hooks/useUserProfile';
+import { useAutoDismiss } from '../../../hooks/useAutoDismiss';
+import type { CreateUserProfileDto } from '../../../services/user-profile';
 import { validateUserProfile } from './userProfile.validation';
 import type { UserProfileFormState as FormState, UserProfileFormErrors as FormErrors } from './userProfile.validation';
 
