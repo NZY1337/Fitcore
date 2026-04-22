@@ -2,7 +2,7 @@
 // https://tkdodo.eu/blog/testing-react-query
 
 
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFitnessMetrics } from './useFitnessMetrics';

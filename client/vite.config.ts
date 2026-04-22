@@ -1,11 +1,18 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    watch: {
+      usePolling: true,
+    },
+  },
   plugins: [
-    react(),
+    react({
+      include: "**/*.tsx",
+    }),
     svgr({
       svgrOptions: {
         icon: true,

@@ -5,10 +5,14 @@ import { WorkoutLog } from './entities/workout-log.entity';
 import { CreateWorkoutLogDto } from './dto/create-workout-log.dto';
 import { type TrainingGoalInput } from '../utils/constants';
 import { calculateOneRepMax, calculateWorkingWeight, calculateVolume } from '../algorythm';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class WorkoutLogsService {
-    constructor(@InjectRepository(WorkoutLog) private repo: Repository<WorkoutLog>) { }
+    constructor(
+        @InjectRepository(WorkoutLog) private repo: Repository<WorkoutLog>,
+        private readonly settingsService: SettingsService,
+    ) { }
 
     create(userId: string, dto: CreateWorkoutLogDto): Promise<WorkoutLog> {
         const log = this.repo.create({ ...dto, user_id: userId });
@@ -17,13 +21,16 @@ export class WorkoutLogsService {
 
     async findAll(userId: string, trainingGoal?: TrainingGoalInput) {
         const logs = await this.repo.findBy({ user_id: userId });
+        const trainingSettings = trainingGoal
+            ? await this.settingsService.getTrainingGoalSettings(userId, trainingGoal)
+            : undefined;
 
         try {
             return logs.map(log => {
                 const oneRepMax = calculateOneRepMax(log.weight_kg, log.reps);
                 const volume = calculateVolume({ sets: log.sets, reps: log.reps, weightKg: log.weight_kg });
-                const workingWeight = trainingGoal
-                    ? calculateWorkingWeight({ oneRepMax, trainingGoal })
+                const workingWeight = trainingSettings
+                    ? calculateWorkingWeight({ oneRepMax, multiplier: trainingSettings.workingWeightMultiplier })
                     : undefined;
 
                 return { ...log, oneRepMax, volume, workingWeight };

@@ -1,6 +1,4 @@
 import { useState, useMemo } from 'react';
-import Metrics from '../../../components/ecommerce/FitnessMetrics/Metrics';
-import Macros from '../../../components/ecommerce/FitnessMetrics/Macros';
 import PageMeta from '../../../components/common/PageMeta';
 import Form from '../../../components/form/Form';
 import Input from '../../../components/form/input/InputField';
@@ -13,6 +11,8 @@ import type { CreateWorkoutLogDto, WorkoutLog } from '../../../services/workout-
 import { validateWorkoutLog } from './workoutLogs.validation';
 import type { WorkoutLogFormState as FormState, WorkoutLogFormErrors as FormErrors } from './workoutLogs.validation';
 import useDebounce from '../../../hooks/useDebounce';
+import WorkingWeightGuidance from './WorkingWeightGuidance';
+import WorkoutTrendCharts from './WorkoutTrendCharts';
 
 const initialFormState: FormState = {
     exercise: '',
@@ -65,6 +65,14 @@ export default function WorkoutLogs() {
             log.exercise.toLowerCase().includes(debouncedQuery.toLowerCase())
         );
     }, [workoutLogs, debouncedQuery]);
+
+    const latestLog = useMemo(() => {
+        if (workoutLogs.length === 0) return undefined;
+
+        return workoutLogs.reduce((latest, current) => (
+            new Date(current.created_at).getTime() > new Date(latest.created_at).getTime() ? current : latest
+        ));
+    }, [workoutLogs]);
 
     const allGrouped = groupByDate(filteredLogs);
     const grouped = allGrouped.slice(0, visibleLogs); // Limit to most recent days
@@ -163,24 +171,8 @@ export default function WorkoutLogs() {
                         )}
 
                         {!isPending && grouped.length > 0 && (() => {
-                            const latest = grouped[0][1][0];
                             return (
                                 <>
-                                    <div className="mb-5 rounded-xl bg-brand-50 border border-brand-200 p-4 text-sm dark:bg-brand-500/10 dark:border-brand-500/30">
-                                        <p className="font-semibold text-brand-700 dark:text-brand-400 mb-1">Cum să interpretezi datele</p>
-                                        <p className="text-gray-600 dark:text-gray-400">
-                                            Pe baza <span className="font-medium text-gray-800 dark:text-white">{latest.exercise}</span> cu{' '}
-                                            <span className="font-medium text-gray-800 dark:text-white">{latest.weight_kg} kg × {latest.reps} reps</span>,
-                                            se estimează că poți ridica maxim{' '}
-                                            <span className="font-medium text-gray-800 dark:text-white">{latest.oneRepMax} kg</span> o singură dată (1RM).
-                                            {latest.workingWeight != null && (
-                                                <> Greutatea recomandată pentru antrenamentul tău este{' '}
-                                                    <span className="font-medium text-gray-800 dark:text-white">{latest.workingWeight} kg</span> —
-                                                    lucrează cu aceasta la {latest.reps > 6 ? '4–6' : '3–5'} repetări pentru a progresa.</>
-                                            )}
-                                        </p>
-                                    </div>
-
                                     <div className="mb-5">
                                         <div className="flex items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 transition">
                                             <input
@@ -281,7 +273,9 @@ export default function WorkoutLogs() {
                 </div>
                 {/* Log Form */}
                 <div className="col-span-12 xl:col-span-5 flex flex-col gap-4 md:gap-6">
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                    <WorkingWeightGuidance latestLog={latestLog} />
+
+                    <div id="log-set-form" className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
                         <div className="mb-6">
                             <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Log a Set</h2>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -366,10 +360,12 @@ export default function WorkoutLogs() {
                             </div>
                         </Form>
                     </div>
-
-                    <Metrics />
-                    <Macros />
                 </div>
+
+                {/* Trend charts - full width below */}
+                {!isPending && workoutLogs.length > 0 && (
+                    <WorkoutTrendCharts workoutLogs={workoutLogs} />
+                )}
             </div>
         </>
     );

@@ -73,7 +73,7 @@ export function validateUserProfile(
                 if (isInvalidCalendarDate) {
                     nextErrors.date_of_birth = 'Date of birth is invalid';
                 } else if (values.date_of_birth >= todayIso) {
-                    nextErrors.date_of_birth = 'Year must be between 1900 and 2026';
+                    nextErrors.date_of_birth = 'Date of birth must be in the past';
                 }
             }
         }

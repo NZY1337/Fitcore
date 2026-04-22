@@ -33,11 +33,29 @@ export function calculateOneRepMax(weightKg: number, reps: number): number {
 }
 
 // with how many kg you can train based on your 1RM and the training goal (strength, hypertrophy, endurance)
-export function calculateWorkingWeight({ oneRepMax, trainingGoal }: { oneRepMax: number; trainingGoal: TrainingGoalInput }): number {
+export function calculateWorkingWeight({
+    oneRepMax,
+    trainingGoal,
+    multiplier,
+}: {
+    oneRepMax: number;
+    trainingGoal?: TrainingGoalInput;
+    multiplier?: number;
+}): number {
     if (oneRepMax <= 0) {
         throw new Error('One-rep max must be greater than zero.');
     }
 
-    const workingWeight = oneRepMax * TRAINING_GOALS[trainingGoal];
+    const workingWeightMultiplier = multiplier ?? (trainingGoal ? TRAINING_GOALS[trainingGoal] : undefined);
+
+    if (workingWeightMultiplier == null) {
+        throw new Error('A training goal or working weight multiplier is required.');
+    }
+
+    if (workingWeightMultiplier <= 0) {
+        throw new Error('Working weight multiplier must be greater than zero.');
+    }
+
+    const workingWeight = oneRepMax * workingWeightMultiplier;
     return parseFloat(workingWeight.toFixed(2));
 }

@@ -13,7 +13,6 @@ import {
     PageIcon,
     PieChartIcon,
     PlugInIcon,
-    TableIcon,
     UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
@@ -42,6 +41,21 @@ const navItems: NavItem[] = [
         icon: <BoltIcon />,
         name: "Workout Logs",
         path: "/dashboard/workout-logs",
+    },
+    {
+        icon: <PieChartIcon />,
+        name: "Weight Log",
+        path: "/dashboard/weight-logs",
+    },
+    {
+        icon: <BoxCubeIcon />,
+        name: "Nutrition",
+        path: "/dashboard/nutrition",
+    },
+    {
+        icon: <ListIcon />,
+        name: "Settings",
+        path: "/dashboard/settings",
     },
     {
         icon: <UserCircleIcon />,

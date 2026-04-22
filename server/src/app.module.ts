@@ -9,6 +9,12 @@ import { SupabaseModule } from './supabase/supabase.module';
 import { FitnessMetricsModule } from './fitness-metrics/fitness-metrics.module';
 import { WorkoutLogsModule } from './workout-logs/workout-logs.module';
 import { WorkoutLog } from './workout-logs/entities/workout-log.entity';
+import { SettingsModule } from './settings/settings.module';
+import { UserSettings } from './settings/entities/settings.entity';
+import { WeightLogsModule } from './weight-logs/weight-logs.module';
+import { WeightLog } from './weight-logs/entities/weight-log.entity';
+import { NutritionLogsModule } from './nutrition-logs/nutrition-logs.module';
+import { NutritionLog } from './nutrition-logs/entities/nutrition-log.entity';
 
 @Module({
     imports: [
@@ -17,12 +23,15 @@ import { WorkoutLog } from './workout-logs/entities/workout-log.entity';
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.LOCAL_DB_URL,
-            entities: [UserProfile, WorkoutLog],
+            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog],
             synchronize: true,
         }),
         UserProfileModule,
         FitnessMetricsModule,
         WorkoutLogsModule,
+        SettingsModule,
+        WeightLogsModule,
+        NutritionLogsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

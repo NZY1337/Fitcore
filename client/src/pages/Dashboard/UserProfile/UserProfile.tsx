@@ -87,7 +87,6 @@ export default function UserProfile() {
         setIsHydrated(true);
     }, [userProfile, isHydrated]);
 
-    console.log('userProfile', userProfile);
     const validate = (values: FormState) => validateUserProfile(values, todayIso);
 
     const onChange = <K extends keyof FormState>(key: K, value: FormState[K]) => {

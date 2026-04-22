@@ -19,7 +19,11 @@ import AppLayout from "./layout/AppLayout";
 import Home from "./pages/Dashboard/Home";
 import Homepage from "./components/Homepage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import UserProfile from "./pages/Dashboard/UserProfile/UserProfile"; import WorkoutLogs from './pages/Dashboard/WorkoutLogs/WorkoutLogs';
+import UserProfile from "./pages/Dashboard/UserProfile/UserProfile";
+import WorkoutLogs from './pages/Dashboard/WorkoutLogs/WorkoutLogs';
+import Settings from './pages/Dashboard/Settings/Settings';
+import WeightLogs from './pages/Dashboard/WeightLogs/WeightLogs';
+import NutritionLogs from './pages/Dashboard/NutritionLogs/NutritionLogs';
 export default function App() {
     return (
         <>
@@ -33,6 +37,9 @@ export default function App() {
                             <Route path="/dashboard" element={<Home />} />
                             <Route path="/dashboard/user-profile" element={<UserProfile />} />
                             <Route path="/dashboard/workout-logs" element={<WorkoutLogs />} />
+                            <Route path="/dashboard/settings" element={<Settings />} />
+                            <Route path="/dashboard/weight-logs" element={<WeightLogs />} />
+                            <Route path="/dashboard/nutrition" element={<NutritionLogs />} />
 
                             {/* Others Page */}
                             <Route path="/profile" element={<UserProfiles />} />

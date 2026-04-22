@@ -34,15 +34,9 @@ export default function Macros() {
         <>
             <h3 className="mb-4 text-sm font-semibold text-gray-800 dark:text-white/90">Daily Macros</h3>
             <div className="grid grid-cols-3 gap-4">
-                <div>
-                    <RenderSingleMacro label="Protein" value={macros.protein} />
-                </div>
-                <div>
-                    <RenderSingleMacro label="Fat" value={macros.fat} />
-                </div>
-                <div>
-                    <RenderSingleMacro label="Carbs" value={macros.carbs} />
-                </div>
+                <RenderSingleMacro label="Protein" value={macros.protein} />
+                <RenderSingleMacro label="Fat" value={macros.fat} />
+                <RenderSingleMacro label="Carbs" value={macros.carbs} />
             </div>
         </>
     );
