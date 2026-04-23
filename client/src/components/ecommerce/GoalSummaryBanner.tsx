@@ -73,9 +73,7 @@ export default function GoalSummaryBanner() {
             </div>
 
             <div className="flex flex-wrap gap-3 mb-5">
-                <span
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${activityConfig.badge}`}
-                >
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${activityConfig.badge}`}>
                     {activityConfig.label}
                 </span>
                 {trainingGoal && (

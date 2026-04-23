@@ -276,104 +276,6 @@ export default function NutritionLogs() {
                     </div>
                 </div>
 
-                {/* Meal log table */}
-                <div className="col-span-12 xl:col-span-7">
-                    <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-                        <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-white/90">
-                            Food Entries
-                        </h2>
-
-                        {submitError && (
-                            <div className="mb-4">
-                                <Alert variant="error" title="Error" message={submitError} />
-                            </div>
-                        )}
-
-                        {isPending && (
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
-                        )}
-
-                        {!isPending && nutritionLogs.length === 0 && (
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                No entries for this day. Log your first meal below.
-                            </p>
-                        )}
-
-                        {!isPending && orderedMeals.length > 0 && (
-                            <div className="space-y-5">
-                                {orderedMeals.map((meal) => {
-                                    const logs = byMeal.get(meal)!;
-                                    const mealLabel =
-                                        meal === 'uncategorised'
-                                            ? 'Uncategorised'
-                                            : meal.charAt(0).toUpperCase() + meal.slice(1);
-                                    const mealTotal = logs.reduce((s, l) => s + l.calories, 0);
-                                    return (
-                                        <div key={meal}>
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                                                    {mealLabel}
-                                                </span>
-                                                <span className="text-xs text-gray-400">
-                                                    {Math.round(mealTotal)} kcal
-                                                </span>
-                                            </div>
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full text-sm text-left">
-                                                    <thead>
-                                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-xs uppercase text-gray-400 dark:text-gray-500">
-                                                            <th className="pb-2 pr-4 font-medium">Food</th>
-                                                            <th className="pb-2 pr-3 font-medium text-center">kcal</th>
-                                                            <th className="pb-2 pr-3 font-medium text-center">P</th>
-                                                            <th className="pb-2 pr-3 font-medium text-center">C</th>
-                                                            <th className="pb-2 pr-3 font-medium text-center">F</th>
-                                                            <th className="pb-2"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                                                        {logs.map((log) => (
-                                                            <tr key={log.id} className="text-gray-700 dark:text-gray-300">
-                                                                <td className="py-2.5 pr-4 font-medium text-gray-800 dark:text-white/90">
-                                                                    {log.food_item}
-                                                                    {log.serving_g && (
-                                                                        <span className="ml-1 text-xs text-gray-400">
-                                                                            {log.serving_g}g
-                                                                        </span>
-                                                                    )}
-                                                                </td>
-                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.calories)}</td>
-                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.protein_g)}g</td>
-                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.carbs_g)}g</td>
-                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.fat_g)}g</td>
-                                                                <td className="py-2.5 text-right whitespace-nowrap">
-                                                                    <button
-                                                                        onClick={() => handleEdit(log)}
-                                                                        disabled={editingId === log.id}
-                                                                        className="mr-3 text-xs text-brand-500 hover:text-brand-600 disabled:opacity-40"
-                                                                    >
-                                                                        Edit
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => handleDelete(log.id)}
-                                                                        disabled={isDeleting && deletingId === log.id}
-                                                                        className="text-xs text-error-500 hover:text-error-600 disabled:opacity-40"
-                                                                    >
-                                                                        {isDeleting && deletingId === log.id ? 'Deleting...' : 'Delete'}
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-                </div>
-
                 {/* Log form */}
                 <div className="col-span-12 xl:col-span-5">
                     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
@@ -535,6 +437,106 @@ export default function NutritionLogs() {
                         </Form>
                     </div>
                 </div>
+
+                {/* Meal log table */}
+                <div className="col-span-12 xl:col-span-7">
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+                        <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-white/90">
+                            Food Entries
+                        </h2>
+
+                        {submitError && (
+                            <div className="mb-4">
+                                <Alert variant="error" title="Error" message={submitError} />
+                            </div>
+                        )}
+
+                        {isPending && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
+                        )}
+
+                        {!isPending && nutritionLogs.length === 0 && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                No entries for this day. Log your first meal below.
+                            </p>
+                        )}
+
+                        {!isPending && orderedMeals.length > 0 && (
+                            <div className="space-y-5">
+                                {orderedMeals.map((meal) => {
+                                    const logs = byMeal.get(meal)!;
+                                    const mealLabel =
+                                        meal === 'uncategorised'
+                                            ? 'Uncategorised'
+                                            : meal.charAt(0).toUpperCase() + meal.slice(1);
+                                    const mealTotal = logs.reduce((s, l) => s + l.calories, 0);
+                                    return (
+                                        <div key={meal}>
+                                            <div className="flex items-center justify-between mb-2">
+                                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                                                    {mealLabel}
+                                                </span>
+                                                <span className="text-xs text-gray-400">
+                                                    {Math.round(mealTotal)} kcal
+                                                </span>
+                                            </div>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full text-sm text-left">
+                                                    <thead>
+                                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-xs uppercase text-gray-400 dark:text-gray-500">
+                                                            <th className="pb-2 pr-4 font-medium">Food</th>
+                                                            <th className="pb-2 pr-3 font-medium text-center">kcal</th>
+                                                            <th className="pb-2 pr-3 font-medium text-center">P</th>
+                                                            <th className="pb-2 pr-3 font-medium text-center">C</th>
+                                                            <th className="pb-2 pr-3 font-medium text-center">F</th>
+                                                            <th className="pb-2"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                                                        {logs.map((log) => (
+                                                            <tr key={log.id} className="text-gray-700 dark:text-gray-300">
+                                                                <td className="py-2.5 pr-4 font-medium text-gray-800 dark:text-white/90">
+                                                                    {log.food_item}
+                                                                    {log.serving_g && (
+                                                                        <span className="ml-1 text-xs text-gray-400">
+                                                                            {log.serving_g}g
+                                                                        </span>
+                                                                    )}
+                                                                </td>
+                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.calories)}</td>
+                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.protein_g)}g</td>
+                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.carbs_g)}g</td>
+                                                                <td className="py-2.5 pr-3 text-center">{Math.round(log.fat_g)}g</td>
+                                                                <td className="py-2.5 text-right whitespace-nowrap">
+                                                                    <button
+                                                                        onClick={() => handleEdit(log)}
+                                                                        disabled={editingId === log.id}
+                                                                        className="mr-3 text-xs text-brand-500 hover:text-brand-600 disabled:opacity-40"
+                                                                    >
+                                                                        Edit
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => handleDelete(log.id)}
+                                                                        disabled={isDeleting && deletingId === log.id}
+                                                                        className="text-xs text-error-500 hover:text-error-600 disabled:opacity-40"
+                                                                    >
+                                                                        {isDeleting && deletingId === log.id ? 'Deleting...' : 'Delete'}
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+
             </div>
         </>
     );

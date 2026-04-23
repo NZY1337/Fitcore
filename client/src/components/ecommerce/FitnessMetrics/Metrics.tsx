@@ -59,10 +59,7 @@ export default function Metrics() {
 
             <RenderSingleMetric label="Calorie Target" value={caloriesTarget} subLabel="kcal / day" />
 
-            <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] md:p-1">
-                <ResponsiveImage />
-            </div>
-
+            <ResponsiveImage url="https://images.pexels.com/photos/8126157/pexels-photo-8126157.jpeg" />
         </>
     );
 }

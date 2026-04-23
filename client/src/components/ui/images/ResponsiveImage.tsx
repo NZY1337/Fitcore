@@ -1,9 +1,9 @@
-export default function ResponsiveImage() {
+export default function ResponsiveImage({ url }: { url: string }) {
     return (
         <div className="relative">
             <div className="overflow-hidden">
                 <img
-                    src="https://images.pexels.com/photos/13993530/pexels-photo-13993530.jpeg"
+                    src={url}
                     alt="Cover"
                     className="w-full border border-gray-200 rounded-xl dark:border-gray-800"
                 />

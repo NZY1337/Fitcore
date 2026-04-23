@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserProfileModule } from './user-profile/user-profile.module';
 import { UserProfile } from './user-profile/entities/user-profile.entity';
-import { SupabaseModule } from './supabase/supabase.module';
+import { SupabaseModule } from '../services/supabase/supabase.module';
 import { FitnessMetricsModule } from './fitness-metrics/fitness-metrics.module';
 import { WorkoutLogsModule } from './workout-logs/workout-logs.module';
 import { WorkoutLog } from './workout-logs/entities/workout-log.entity';

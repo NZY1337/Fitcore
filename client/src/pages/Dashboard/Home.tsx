@@ -13,30 +13,19 @@ export default function Home() {
                 description="View your fitness metrics and track your progress over time on the dashboard."
             />
             <div className="grid grid-cols-12 gap-4 md:gap-6">
-                <div className="col-span-12">
-                    <GoalSummaryBanner />
-                </div>
-
-                <div className="col-span-12 space-y-6 xl:col-span-7">
+                <div className="col-span-6 space-y-6 xl:col-span-6">
                     <FitnessMetrics />
-
-                    {/* <MonthlySalesChart /> */}
                 </div>
 
-                <div className="col-span-12 xl:col-span-5">
-                    <MonthlyTarget />
+                <div className="col-span-6">
+                    <GoalSummaryBanner />
+
+                    <div className="mt-5">
+                        <MonthlyTarget />
+                    </div>
                 </div>
-
-                {/* <div className="col-span-12">
-                    <StatisticsChart />
-                </div> */}
-
                 {/* <div className="col-span-12 xl:col-span-5">
-                    <DemographicCard />
-                </div> */}
-
-                {/* <div className="col-span-12 xl:col-span-7">
-                    <RecentOrders />
+                    <MonthlyTarget />
                 </div> */}
             </div>
         </>
