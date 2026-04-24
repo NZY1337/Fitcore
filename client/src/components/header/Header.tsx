@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
                                 </span>
                             </div>
                             <span className="font-black text-2xl tracking-tighter text-black dark:text-white uppercase italic">
-                                FitCore
+                                Fitforge
                             </span>
                         </div>
                     </Link>

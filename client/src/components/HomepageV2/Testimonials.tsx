@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
     {
-        quote: "FitCore AI este singura platformă care se adaptează când sunt obosit. Rezultate reale în timp record.",
+        quote: "Fitforge AI este singura platformă care se adaptează când sunt obosit. Rezultate reale în timp record.",
         author: "Marcus T.",
         role: "Software Engineer",
         image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop"
