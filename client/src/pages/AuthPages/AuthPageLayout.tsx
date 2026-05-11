@@ -21,7 +21,7 @@ export default function AuthLayout({
                                     <div className="w-25 h-25 bg-black flex items-center justify-center">
                                         <span className="text-[#DFFF00] font-black text-7xl italic">F</span>
                                     </div>
-                                    <span className="font-black text-7xl tracking-tighter text-white uppercase italic">FitCore</span>
+                                    <span className="font-black text-7xl tracking-tighter text-white uppercase italic">Fitforge</span>
                                 </div>
                             </Link>
                         </div>

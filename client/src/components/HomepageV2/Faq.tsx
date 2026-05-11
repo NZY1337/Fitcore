@@ -5,7 +5,7 @@ import { Plus, Minus } from 'lucide-react';
 const FAQ = () => {
     const [openIndex, setOpenIndex] = useState(0);
     const faqs = [
-        { q: "Trebuie să fiu avansat pentru a folosi FitCore?", a: "Absolut nu. AI-ul nostru începe de la nivelul tău actual." },
+        { q: "Trebuie să fiu avansat pentru a folosi Fitforge?", a: "Absolut nu. AI-ul nostru începe de la nivelul tău actual." },
         { q: "Cum funcționează analiza video?", a: "Folosim camera telefonului tău pentru a detecta 17 puncte cheie ale corpului în timp real." },
         { q: "Pot anula abonamentul oricând?", a: "Da, fără întrebări ascunse. Poți anula din setările contului cu un singur click." }
     ];
