@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import PageMeta from '../../../components/common/PageMeta';
 import Form from '../../../components/form/Form';
 import Input from '../../../components/form/input/InputField';
@@ -33,10 +33,12 @@ type EnrichedLog = WorkoutLog & { oneRepMax: number; volume: number; workingWeig
 
 function groupByDate(logs: EnrichedLog[]) {
     const map = new Map<string, EnrichedLog[]>();
+
     for (const log of logs) {
         const key = new Date(log.created_at).toLocaleDateString('en-GB', {
             day: 'numeric', month: 'long', year: 'numeric',
         });
+
         if (!map.has(key)) map.set(key, []);
         map.get(key)!.push(log);
     }
@@ -56,6 +58,8 @@ export default function WorkoutLogs() {
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [openDays, setOpenDays] = useState<Set<string>>(new Set());
     const [query, setQuery] = useState("");
+    const [latestLog, setLatestLog] = useState<WorkoutLog | null>(null)
+
     const debouncedQuery = useDebounce(query, 400);
 
     const filteredLogs = useMemo(() => {
@@ -66,13 +70,28 @@ export default function WorkoutLogs() {
         );
     }, [workoutLogs, debouncedQuery]);
 
-    const latestLog = useMemo(() => {
+    useEffect(() => {
         if (workoutLogs.length === 0) return undefined;
 
-        return workoutLogs.reduce((latest, current) => (
+        const currentLog = workoutLogs.reduce((latest, current) => (
             new Date(current.created_at).getTime() > new Date(latest.created_at).getTime() ? current : latest
         ));
-    }, [workoutLogs]);
+
+        if (currentLog) setLatestLog(currentLog)
+
+    }, [workoutLogs])
+
+    // const latestLog = useMemo(() => {
+    //     if (workoutLogs.length === 0) return undefined;
+
+    //     const getLatestLogs = workoutLogs.reduce((latest, current) => (
+    //         new Date(current.created_at).getTime() > new Date(latest.created_at).getTime() ? current : latest
+    //     ));
+
+    //     console.log(getLatestLogs);
+
+    //     return getLatestLogs
+    // }, [workoutLogs]);
 
     const allGrouped = groupByDate(filteredLogs);
     const grouped = allGrouped.slice(0, visibleLogs); // Limit to most recent days
@@ -144,6 +163,10 @@ export default function WorkoutLogs() {
         });
     };
 
+    const handleGetLatestWork = (log: WorkoutLog) => {
+        setLatestLog(log)
+    }
+
     return (
         <>
             <PageMeta
@@ -194,6 +217,7 @@ export default function WorkoutLogs() {
                                         {grouped.map(([day, logs]) => {
                                             const open = isDayOpen(day);
                                             const totalVolume = logs.reduce((sum, l) => sum + l.volume, 0);
+
                                             return (
                                                 <div key={day} className="rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
                                                     {/* Accordion header */}
@@ -214,7 +238,7 @@ export default function WorkoutLogs() {
                                                     {open && (
                                                         <div className="overflow-x-auto">
                                                             <table className="w-full text-sm text-left">
-                                                                <thead>
+                                                                <thead >
                                                                     <tr className="border-b border-gray-100 dark:border-gray-800 text-xs uppercase text-gray-400 dark:text-gray-500">
                                                                         <th className="px-4 pb-3 pt-2 font-medium">Exercise</th>
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center">Sets</th>
@@ -222,13 +246,13 @@ export default function WorkoutLogs() {
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center">Weight</th>
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Greutatea maximă estimată pentru o singură repetare (formula Epley)">1RM ⓘ</th>
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Greutatea recomandată de antrenament bazată pe 1RM și obiectivul tău">Working wt. ⓘ</th>
-                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Volum total = seturi × repetări × greutate">Volume ⓘ</th>
+                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Volum total = seturi x repetări x greutate">Volume ⓘ</th>
                                                                         <th className="pb-3 pt-2"></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                                                     {logs.map((log) => (
-                                                                        <tr key={log.id} className="text-gray-700 dark:text-gray-300">
+                                                                        <tr key={log.id} className="text-gray-700 dark:text-gray-300" onClick={() => handleGetLatestWork(log)}>
                                                                             <td className="px-4 py-3 font-medium text-gray-800 dark:text-white/90">{log.exercise}</td>
                                                                             <td className="py-3 pr-4 text-center">{log.sets}</td>
                                                                             <td className="py-3 pr-4 text-center">{log.reps}</td>
@@ -273,7 +297,7 @@ export default function WorkoutLogs() {
                 </div>
                 {/* Log Form */}
                 <div className="col-span-12 xl:col-span-5 flex flex-col gap-4 md:gap-6">
-                    <WorkingWeightGuidance latestLog={latestLog} />
+                    {latestLog && <WorkingWeightGuidance latestLog={latestLog} />}
 
                     <div id="log-set-form" className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
                         <div className="mb-6">

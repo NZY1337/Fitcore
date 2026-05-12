@@ -1,7 +1,6 @@
 import { Injectable, Logger, } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
-
 import { DataSource } from 'typeorm';
 
 // https://docs.nestjs.com/techniques/task-scheduling 
@@ -18,13 +17,18 @@ export class TaskService {
         name: 'notifications',
         timeZone: 'Europe/Bucharest',
     })
+
     async handleCron() {
         // this.nodemailer.sendMail();
-        // SELECT * FROM "nutrition_logs" WHERE "logged_at"::date = '2026-04-20 07:30:00';    
+        // SELECT * FROM "nutrition_logs" WHERE "logged_at":: date = '2026-04-20 07:30:00';
 
-        // this.logger.debug('Called when the current second is 5');
+        this.logger.debug('Called when the current second is 5');
         const data = await this.dataSource.query(`
-            SELECT * FROM "nutrition_logs" WHERE "logged_at"::date = DATE(NOW());
+            SELECT users.email, users.id FROM users
+            LEFT JOIN nutrition_logs 
+                ON users.id::uuid = nutrition_logs.user_id
+                AND nutrition_logs.logged_at::date = DATE(NOW())
+            WHERE nutrition_logs.user_id IS NULL;
         `)
 
         if (!!data.length) {

@@ -39,7 +39,7 @@
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "svix": "1.89.0",
-    "typeorm": "0.3.6"
+    "typeorm": "^0.3.6"
   },
   "overrides": {
     "ajv": "8.18.0",
