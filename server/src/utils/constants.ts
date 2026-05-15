@@ -20,6 +20,11 @@ export enum Plan {
     PREMIUM = 'premium',
 }
 
+export enum Role {
+    USER = 'user',
+    ADMIN = 'admin',
+}
+
 export const BMI_VALUES = {
     underweight: 18.5,
     normal_weight: 25,

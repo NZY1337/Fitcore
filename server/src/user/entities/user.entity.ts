@@ -1,5 +1,5 @@
 import { Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, AfterInsert, Entity } from "typeorm";
-import { Plan } from "../../utils/constants";
+import { Plan, Role } from "../../utils/constants";
 
 @Entity('users')
 export class UserEntity {
@@ -11,6 +11,9 @@ export class UserEntity {
 
     @Column({ type: 'enum', enum: Plan, default: Plan.FREE })
     plan: Plan;
+
+    @Column({ type: 'enum', enum: Role, default: Role.USER })
+    role: Role;
 
     @CreateDateColumn()
     createdAt: Date;
