@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import { Dumbbell } from "lucide-react";
 
 // Assume these icons are imported from an icon library
 import {
@@ -48,6 +49,11 @@ const navItems: NavItem[] = [
         icon: <BoxCubeIcon />,
         name: "Nutrition",
         path: "/dashboard/nutrition",
+    },
+    {
+        icon: <Dumbbell className="size-6" />,
+        name: "Exercises",
+        path: "/dashboard/exercises",
     },
     {
         icon: <ListIcon />,

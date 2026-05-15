@@ -10,6 +10,7 @@ import { SettingsModule } from './settings/settings.module';
 import { WeightLogsModule } from './weight-logs/weight-logs.module';
 import { NutritionLogsModule } from './nutrition-logs/nutrition-logs.module';
 import { UserModule } from './user/user.module';
+import { ExercisesModule } from './exercises/exercises.module';
 
 // interceptors
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -48,6 +49,7 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         WeightLogsModule,
         NutritionLogsModule,
         UserModule,
+        ExercisesModule,
     ],
     providers: [{
         provide: APP_INTERCEPTOR,

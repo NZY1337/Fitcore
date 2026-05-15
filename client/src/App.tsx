@@ -11,6 +11,7 @@ import WorkoutLogs from './pages/Dashboard/WorkoutLogs/WorkoutLogs';
 import Settings from './pages/Dashboard/Settings/Settings';
 import WeightLogs from './pages/Dashboard/WeightLogs/WeightLogs';
 import NutritionLogs from './pages/Dashboard/NutritionLogs/NutritionLogs';
+import ExercisesPage from './pages/Dashboard/Exercises/ExercisesPage';
 
 export default function App() {
     return (
@@ -27,6 +28,7 @@ export default function App() {
                             <Route path="/dashboard/settings" element={<Settings />} />
                             <Route path="/dashboard/weight-logs" element={<WeightLogs />} />
                             <Route path="/dashboard/nutrition" element={<NutritionLogs />} />
+                            <Route path="/dashboard/exercises" element={<ExercisesPage />} />
                         </Route>
                     </Route>
 

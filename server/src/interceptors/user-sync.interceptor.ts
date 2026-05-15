@@ -1,28 +1,25 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { UserService } from '../user/user.service';
 
 @Injectable()
 export class UserSyncInterceptor implements NestInterceptor {
+    private readonly logger = new Logger(UserSyncInterceptor.name);
+
     constructor(private readonly userService: UserService) { }
 
-    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
         const request = context.switchToHttp().getRequest();
-        const user = request.user; // set by your auth guard
+        const user = request.user;
 
         if (user) {
-            this.userService.upsertUser(user);
+            try {
+                await this.userService.upsertUser(user);
+            } catch (error) {
+                this.logger.error(`Failed to upsert user ${user.id}: ${error.message}`, error.stack);
+            }
         }
 
         return next.handle();
-
-        // const now = Date.now();
-
-        // return next
-        //     .handle()
-        //     .pipe(
-        //         tap(() => console.log(`After... ${Date.now() - now}ms`)),
-        //     );
     }
 }
