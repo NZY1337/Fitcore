@@ -11,6 +11,8 @@ import { WeightLogsModule } from './weight-logs/weight-logs.module';
 import { NutritionLogsModule } from './nutrition-logs/nutrition-logs.module';
 import { UserModule } from './user/user.module';
 import { ExercisesModule } from './exercises/exercises.module';
+import { AdminModule } from './admin/admin.module';
+import { WorkoutAssignmentsModule } from './workout-assignments/workout-assignments.module';
 
 // interceptors
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -22,6 +24,7 @@ import { NutritionLog } from './nutrition-logs/entities/nutrition-log.entity';
 import { WeightLog } from './weight-logs/entities/weight-log.entity';
 import { UserSettings } from './settings/entities/settings.entity';
 import { WorkoutLog } from './workout-logs/entities/workout-log.entity';
+import { WorkoutAssignment } from './workout-assignments/entities/workout-assignment.entity';
 
 // services
 import { SupabaseModule } from '../services/supabase/supabase.module';
@@ -36,7 +39,7 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.LOCAL_DB_URL,
-            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity],
+            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment],
             synchronize: true,
         }),
         SupabaseModule,
@@ -50,6 +53,8 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         NutritionLogsModule,
         UserModule,
         ExercisesModule,
+        WorkoutAssignmentsModule,
+        AdminModule,
     ],
     providers: [{
         provide: APP_INTERCEPTOR,

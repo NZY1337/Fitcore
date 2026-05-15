@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, UseGuards, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards, Res, Req } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
 
@@ -25,10 +25,15 @@ export class ExercisesController {
     // Public — browsers cannot send auth headers via <img src>, API key is added server-side
     @Get('gif/:id')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async getGif(@Param('id') id: string, @Res() res: any) {
+    async getGif(@Param('id') id: string, @Req() req: any, @Res() res: any) {
+        const etag = `"${id}"`;
+        if (req.headers['if-none-match'] === etag) {
+            return res.status(304).end();
+        }
         const buffer = await this.exercisesService.getGif(id);
         res.setHeader('Content-Type', 'image/gif');
-        res.setHeader('Cache-Control', 'public, max-age=86400');
+        res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+        res.setHeader('ETag', etag);
         res.send(buffer);
     }
 
