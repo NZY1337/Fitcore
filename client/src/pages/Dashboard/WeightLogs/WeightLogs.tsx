@@ -9,7 +9,6 @@ import Alert from '../../../components/ui/alert/Alert';
 import Button from '../../../components/ui/button/Button';
 import { useWeightLogs } from '../../../hooks/useWeightLogs';
 import { useAutoDismiss } from '../../../hooks/useAutoDismiss';
-import ResponsiveImage from '../../../components/ui/images/ResponsiveImage';
 
 type FormState = {
     weight_kg: string;
@@ -287,10 +286,6 @@ export default function WeightLogs() {
                             </div>
                         )}
                     </div>
-                </div>
-
-                <div className="col-span-6">
-                    <ResponsiveImage url="https://images.pexels.com/photos/8126157/pexels-photo-8126157.jpeg" />
                 </div>
             </div>
         </>

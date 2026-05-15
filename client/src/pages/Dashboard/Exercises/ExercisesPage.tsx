@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import { Navigate } from 'react-router';
 import { Search, X, ChevronLeft, ChevronRight, Dumbbell, Target, Zap, BookOpen } from 'lucide-react';
 import PageMeta from '../../../components/common/PageMeta';
 import { useExercises, useSimilarExercises } from '../../../hooks/useExercises';
 import useDebounce from '../../../hooks/useDebounce';
 import type { Exercise } from '../../../services/exercises';
 import { BACKEND_URL } from '../../../helpers/constants';
+import { useCurrentUser } from '../../../hooks/useCurrentUser';
 
 const gifUrl = (id: string) => `${BACKEND_URL}/exercises/gif/${id}`;
 
@@ -215,6 +217,7 @@ function ExerciseModal({ exercise: initial, onClose }: { exercise: Exercise; onC
 }
 
 export default function ExercisesPage() {
+    const { isAdmin, isPending: userPending } = useCurrentUser();
     const [searchInput, setSearchInput] = useState('');
     const [activeBodyPart, setActiveBodyPart] = useState('all');
     const [activeEquipment, setActiveEquipment] = useState('all');
@@ -249,6 +252,8 @@ export default function ExercisesPage() {
     };
 
     const hasActiveFilter = searchInput || activeBodyPart !== 'all' || activeEquipment !== 'all';
+
+    if (!userPending && !isAdmin) return <Navigate to="/dashboard" replace />;
 
     return (
         <>

@@ -12,6 +12,9 @@ import Settings from './pages/Dashboard/Settings/Settings';
 import WeightLogs from './pages/Dashboard/WeightLogs/WeightLogs';
 import NutritionLogs from './pages/Dashboard/NutritionLogs/NutritionLogs';
 import ExercisesPage from './pages/Dashboard/Exercises/ExercisesPage';
+import PersonalRecordsPage from './pages/Dashboard/PersonalRecords/PersonalRecordsPage';
+import AdminPage from './pages/Dashboard/Admin/AdminPage';
+import MyPlanPage from './pages/Dashboard/MyPlan/MyPlanPage';
 
 export default function App() {
     return (
@@ -29,6 +32,9 @@ export default function App() {
                             <Route path="/dashboard/weight-logs" element={<WeightLogs />} />
                             <Route path="/dashboard/nutrition" element={<NutritionLogs />} />
                             <Route path="/dashboard/exercises" element={<ExercisesPage />} />
+                            <Route path="/dashboard/personal-records" element={<PersonalRecordsPage />} />
+                            <Route path="/dashboard/my-plan" element={<MyPlanPage />} />
+                            <Route path="/dashboard/admin" element={<AdminPage />} />
                         </Route>
                     </Route>
 
