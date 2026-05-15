@@ -288,10 +288,6 @@ export default function WeightLogs() {
                         )}
                     </div>
                 </div>
-
-                <div className="col-span-6">
-                    <ResponsiveImage url="https://images.pexels.com/photos/8126157/pexels-photo-8126157.jpeg" />
-                </div>
             </div>
         </>
     );
