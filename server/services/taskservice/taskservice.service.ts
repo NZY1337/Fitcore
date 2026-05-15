@@ -11,6 +11,7 @@ export class TaskService {
         private readonly nodemailer: NodemailerService,
         private readonly dataSource: DataSource
     ) { }
+
     private readonly logger = new Logger(TaskService.name);
 
     @Cron(CronExpression.EVERY_5_SECONDS, {
@@ -19,7 +20,6 @@ export class TaskService {
     })
 
     async handleCron() {
-        // this.nodemailer.sendMail();
         // SELECT * FROM "nutrition_logs" WHERE "logged_at":: date = '2026-04-20 07:30:00';
 
         this.logger.debug('Called when the current second is 5');
@@ -32,7 +32,7 @@ export class TaskService {
         `)
 
         if (!!data.length) {
-            this.logger.debug('user has data, mail can be sent')
+            // this.nodemailer.sendMail(data);
         } else {
             this.logger.error('user has no data logged')
             console.log('no entries found')

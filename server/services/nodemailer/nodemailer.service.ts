@@ -11,10 +11,12 @@ export class NodemailerService {
         }
     })
 
-    async sendMail() {
+    async sendMail(users) {
+        const usersEmail = users.map(user => user.email);
+
         this.transporter.sendMail({
             from: process.env.GMAIL_USERNAME,
-            to: 'mandreicosmin@yahoo.com', // send to yourself for testing
+            to: usersEmail, // send to yourself for testing
             subject: 'Nu ai logat astazi zilele nimic in calendar',
             text: 'Hello, noi suntem Fitforge. This is a test message',
         }, (err: Error | null, info: any) => {

@@ -22,8 +22,6 @@ export class FitnessMetricsService {
     async getMetrics(userId: string): Promise<any> {
         const userProfile = await this.userProfileService.findOne(userId);
 
-        // this.nodemailer.sendMail()
-
         if (!userProfile) {
             throw new NotFoundException('User profile not found');
         }
