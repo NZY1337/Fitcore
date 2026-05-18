@@ -79,4 +79,9 @@ export class AdminController {
     getAiUsage() {
         return this.aiUsageLogs.getAdminStats();
     }
+
+    @Get('ai-usage/by-user')
+    getAiUsageByUser() {
+        return this.aiUsageLogs.getAdminStatsByUser();
+    }
 }

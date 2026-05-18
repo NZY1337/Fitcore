@@ -43,4 +43,20 @@ export class AiUsageLogsService {
             .orderBy('date', 'DESC')
             .getRawMany();
     }
+
+    async getAdminStatsByUser() {
+        return this.repo
+            .createQueryBuilder('log')
+            .innerJoin('users', 'u', 'u.id::text = log.user_id')
+            .select('u.id', 'user_id')
+            .addSelect('u.email', 'email')
+            .addSelect('COUNT(*)', 'requests')
+            .addSelect('SUM(log.prompt_tokens)', 'prompt_tokens')
+            .addSelect('SUM(log.completion_tokens)', 'completion_tokens')
+            .addSelect('ROUND(SUM(log.cost_usd)::numeric, 6)', 'total_cost_usd')
+            .groupBy('u.id')
+            .addGroupBy('u.email')
+            .orderBy('total_cost_usd', 'DESC')
+            .getRawMany();
+    }
 }
