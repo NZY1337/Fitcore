@@ -16,6 +16,8 @@ import { WorkoutAssignmentsModule } from './workout-assignments/workout-assignme
 import { AiWorkoutPlanModule } from './ai-workout-plan/ai-workout-plan.module';
 import { AiMealPlanModule } from './ai-meal-plan/ai-meal-plan.module';
 import { AiMealPlan } from './ai-meal-plan/entities/ai-meal-plan.entity';
+import { AiUsageLogsModule } from './ai-usage-logs/ai-usage-logs.module';
+import { AiUsageLog } from './ai-usage-logs/entities/ai-usage-log.entity';
 
 // interceptors
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -43,7 +45,7 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.LOCAL_DB_URL,
-            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment, AiWorkoutPlan, AiMealPlan],
+            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment, AiWorkoutPlan, AiMealPlan, AiUsageLog],
             synchronize: true,
         }),
         SupabaseModule,
@@ -61,6 +63,7 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         AdminModule,
         AiWorkoutPlanModule,
         AiMealPlanModule,
+        AiUsageLogsModule,
     ],
     providers: [{
         provide: APP_INTERCEPTOR,

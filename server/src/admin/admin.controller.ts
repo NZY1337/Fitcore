@@ -9,6 +9,7 @@ import { UserService } from '../user/user.service';
 import { WorkoutAssignmentsService } from '../workout-assignments/workout-assignments.service';
 import { WorkoutAssignment } from '../workout-assignments/entities/workout-assignment.entity';
 import { CreateAssignmentDto } from '../workout-assignments/dto/workout-assignment.dto';
+import { AiUsageLogsService } from '../ai-usage-logs/ai-usage-logs.service';
 
 @Controller('admin')
 @UseGuards(SupabaseAuthGuard, RolesGuard)
@@ -17,6 +18,7 @@ export class AdminController {
     constructor(
         private readonly userService: UserService,
         private readonly assignmentsService: WorkoutAssignmentsService,
+        private readonly aiUsageLogs: AiUsageLogsService,
         @InjectRepository(WorkoutAssignment) private readonly assignmentRepo: Repository<WorkoutAssignment>,
     ) {}
 
@@ -71,5 +73,10 @@ export class AdminController {
     @Delete('assignments/:id')
     removeAssignment(@Param('id') id: string) {
         return this.assignmentsService.remove(id);
+    }
+
+    @Get('ai-usage')
+    getAiUsage() {
+        return this.aiUsageLogs.getAdminStats();
     }
 }
