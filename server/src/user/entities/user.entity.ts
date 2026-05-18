@@ -9,6 +9,12 @@ export class UserEntity {
     @Column({ unique: true })
     email: string;
 
+    @Column()
+    name: string;
+
+    @Column()
+    avatar: string;
+
     @Column({ type: 'enum', enum: Plan, default: Plan.FREE })
     plan: Plan;
 

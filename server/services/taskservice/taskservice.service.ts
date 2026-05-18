@@ -26,7 +26,7 @@ export class TaskService {
         const data = await this.dataSource.query(`
             SELECT users.email, users.id FROM users
             LEFT JOIN nutrition_logs 
-                ON users.id::uuid = nutrition_logs.user_id
+                ON users.id::text = nutrition_logs.user_id::text
                 AND nutrition_logs.logged_at::date = DATE(NOW())
             WHERE nutrition_logs.user_id IS NULL;
         `)

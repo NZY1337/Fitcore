@@ -1,9 +1,14 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('nutrition_logs')
 export class NutritionLog {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'uuid' })
     user_id: string;

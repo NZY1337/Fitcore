@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import type { DayOfWeek } from '../../workout-assignments/entities/workout-assignment.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 export interface PlanExercise {
     exercise_id: string;
@@ -29,6 +30,10 @@ export interface PlanVariant {
 export class AiWorkoutPlan {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'uuid' })
     user_id: string;

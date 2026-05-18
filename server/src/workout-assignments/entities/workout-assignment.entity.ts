@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
@@ -6,6 +7,10 @@ export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'frida
 export class WorkoutAssignment {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'uuid' })
     user_id: string;

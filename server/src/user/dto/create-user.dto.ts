@@ -3,5 +3,7 @@ import { Plan } from '../../utils/constants';
 export class CreateUserDto {
     id: string;
     email: string;
-    plan?: Plan;
+    name: string;
+    avatar: string;
+    plan: Plan;
 }

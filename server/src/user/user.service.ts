@@ -4,13 +4,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Role } from '../utils/constants';
+import { NodemailerService } from '../../services/nodemailer/nodemailer.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(UserEntity) private repo: Repository<UserEntity>) { }
+    constructor(@InjectRepository(UserEntity) private repo: Repository<UserEntity>,
+        private readonly nodemailer: NodemailerService
+    ) { }
 
     async upsertUser(user: CreateUserDto) {
-        await this.repo.upsert({ id: user.id, email: user.email }, ['id']);
+        const existing = await this.repo.findOneBy({ id: user.id });
+
+        await this.repo.upsert({ id: user.id, email: user.email, name: user.name, avatar: user.avatar }, ['id']);
+
+        if (!existing) {
+            console.log(`New user created: ${user.email} (${user.id})`);
+            await this.nodemailer.sendWelcomeEmail(user.email, user.name);
+        }
     }
 
     findById(id: string): Promise<UserEntity | null> {
@@ -24,6 +34,10 @@ export class UserService {
     async updateRole(id: string, role: Role): Promise<UserEntity> {
         await this.repo.update({ id }, { role });
         return this.repo.findOneByOrFail({ id });
+    }
+
+    async deleteUser(id: string): Promise<void> {
+        await this.repo.delete(id);
     }
 
     async getStats(): Promise<{
