@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
-import { getAdminUsers, getAdminStats, updateUserRole, getAiUsage } from '../services/admin';
+import { getAdminUsers, getAdminStats, updateUserRole, getAiUsage, getAiUsageByUser } from '../services/admin';
 
 export const useAdmin = () => {
     const { session } = useAppContext();
@@ -66,4 +66,21 @@ export const useAiUsageLogs = () => {
     });
 
     return { logs, isPending };
+};
+
+export const useAiUsageByUser = () => {
+    const { session } = useAppContext();
+    const token = session?.access_token;
+
+    const { data: byUser = [], isPending } = useQuery({
+        queryKey: ['aiUsageByUser'],
+        queryFn: () => {
+            if (!token) throw new Error('No authentication token');
+            return getAiUsageByUser(token);
+        },
+        enabled: !!token,
+        staleTime: 60 * 1000,
+    });
+
+    return { byUser, isPending };
 };
