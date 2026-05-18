@@ -43,6 +43,20 @@ export const getAdminUsers = async (token: string): Promise<AdminUser[]> => {
     return res.json();
 };
 
+export interface AiUsageStat {
+    date: string;
+    requests: string;
+    prompt_tokens: string;
+    completion_tokens: string;
+    total_cost_usd: string;
+}
+
+export const getAiUsage = async (token: string): Promise<AiUsageStat[]> => {
+    const res = await fetch(`${BACKEND_URL}/admin/ai-usage`, { headers: authHeaders(token) });
+    if (!res.ok) throw new Error(await getErrorMessage(res));
+    return res.json();
+};
+
 export const updateUserRole = async (token: string, id: string, role: 'user' | 'admin'): Promise<AdminUser> => {
     const res = await fetch(`${BACKEND_URL}/admin/users/${id}/role`, {
         method: 'PATCH',

@@ -7,6 +7,7 @@ import OpenAI from 'openai';
 import { AiMealPlan, MealPlanVariant } from './entities/ai-meal-plan.entity';
 import { GenerateMealPlanDto, SelectMealPlanDto } from './dto/ai-meal-plan.dto';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
+import { AiUsageLogsService } from '../ai-usage-logs/ai-usage-logs.service';
 import {
     calculateBMR,
     calculateTDEE,
@@ -25,6 +26,7 @@ export class AiMealPlanService {
         @InjectRepository(UserProfile)
         private readonly profileRepo: Repository<UserProfile>,
         private readonly config: ConfigService,
+        private readonly aiUsageLogs: AiUsageLogsService,
     ) {
         this.openai = new OpenAI({
             apiKey: this.config.get<string>('OPENAI_API_KEY'),
@@ -64,6 +66,14 @@ export class AiMealPlanService {
                 { role: 'system', content: 'You are a professional nutritionist. Always respond with valid JSON only.' },
                 { role: 'user', content: prompt },
             ],
+        });
+
+        void this.aiUsageLogs.log({
+            user_id: userId,
+            model: completion.model,
+            type: 'meal_plan',
+            prompt_tokens: completion.usage?.prompt_tokens ?? 0,
+            completion_tokens: completion.usage?.completion_tokens ?? 0,
         });
 
         const raw = completion.choices[0].message.content ?? '{}';

@@ -9,6 +9,7 @@ import { GeneratePlanDto, SelectPlanDto } from './dto/ai-workout-plan.dto';
 import { ExercisesService, Exercise } from '../exercises/exercises.service';
 import { UserProfile } from '../user-profile/entities/user-profile.entity';
 import { WorkoutAssignment } from '../workout-assignments/entities/workout-assignment.entity';
+import { AiUsageLogsService } from '../ai-usage-logs/ai-usage-logs.service';
 
 const BODY_PARTS = ['chest', 'back', 'shoulders', 'upper arms', 'upper legs', 'lower legs', 'waist'];
 
@@ -26,6 +27,7 @@ export class AiWorkoutPlanService {
         private readonly assignmentRepo: Repository<WorkoutAssignment>,
         private readonly exercisesService: ExercisesService,
         private readonly config: ConfigService,
+        private readonly aiUsageLogs: AiUsageLogsService,
     ) {
         this.openai = new OpenAI({
             apiKey: this.config.get<string>('OPENAI_API_KEY'),
@@ -74,6 +76,14 @@ export class AiWorkoutPlanService {
                 },
                 { role: 'user', content: prompt },
             ],
+        });
+
+        void this.aiUsageLogs.log({
+            user_id: userId,
+            model: completion.model,
+            type: 'workout_plan',
+            prompt_tokens: completion.usage?.prompt_tokens ?? 0,
+            completion_tokens: completion.usage?.completion_tokens ?? 0,
         });
 
         const raw = completion.choices[0].message.content ?? '{}';

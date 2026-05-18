@@ -14,6 +14,7 @@ import NutritionLogs from './pages/Dashboard/NutritionLogs/NutritionLogs';
 import ExercisesPage from './pages/Dashboard/Exercises/ExercisesPage';
 import PersonalRecordsPage from './pages/Dashboard/PersonalRecords/PersonalRecordsPage';
 import AdminPage from './pages/Dashboard/Admin/AdminPage';
+import AiUsagePage from './pages/Dashboard/Admin/AiUsagePage';
 import MyPlanPage from './pages/Dashboard/MyPlan/MyPlanPage';
 import AiPlanPage from './pages/Dashboard/AiPlan/AiPlanPage';
 import AiMealPlanPage from './pages/Dashboard/AiMealPlan/AiMealPlanPage';
@@ -39,6 +40,7 @@ export default function App() {
                             <Route path="/dashboard/ai-plan" element={<AiPlanPage />} />
                             <Route path="/dashboard/ai-meal-plan" element={<AiMealPlanPage />} />
                             <Route path="/dashboard/admin" element={<AdminPage />} />
+                            <Route path="/dashboard/admin/ai-usage" element={<AiUsagePage />} />
                         </Route>
                     </Route>
 
