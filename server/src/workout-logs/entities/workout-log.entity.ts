@@ -7,12 +7,19 @@ import {
     AfterInsert,
     AfterRemove,
     AfterUpdate,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('workout_logs')
 export class WorkoutLog {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'uuid' })
     user_id: string;

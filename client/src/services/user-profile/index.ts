@@ -43,13 +43,14 @@ const addUserProfile = async (token: string, dto: CreateUserProfileDto) => {
     return response.json();
 }
 
-const getUserProfile = async (token: string) => {
+const getUserProfile = async (token: string): Promise<CreateUserProfileDto | null> => {
     const response = await fetch(BACKEND_URL + '/user-profile', {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
 
+    if (response.status === 404) return null;
     if (!response.ok) throw new Error(await getErrorMessageFromResponse(response));
     return response.json();
 };

@@ -2,7 +2,6 @@ import { Link } from 'react-router';
 import { useFitnessMetrics } from '../../../hooks/useFitnessMetrics';
 import type { FitnessMetricsDto } from '../../../services/fitness-metrics';
 import RenderSingleMetric from './RenderFitnessMetric';
-import ResponsiveImage from '../../ui/images/ResponsiveImage';
 
 
 const BMI_CATEGORY_LABELS: Record<FitnessMetricsDto['bmi']['category'], string> = {
@@ -58,8 +57,6 @@ export default function Metrics() {
             <RenderSingleMetric label="TDEE" value={tdee} subLabel="kcal / day" />
 
             <RenderSingleMetric label="Calorie Target" value={caloriesTarget} subLabel="kcal / day" />
-
-            <ResponsiveImage url="https://images.pexels.com/photos/8126157/pexels-photo-8126157.jpeg" />
         </>
     );
 }

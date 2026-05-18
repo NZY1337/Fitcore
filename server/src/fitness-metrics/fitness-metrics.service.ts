@@ -10,12 +10,19 @@ import {
     calculateHeartRateZones,
 } from '../algorythm';
 
+import { NodemailerService } from '../../services/nodemailer/nodemailer.service';
+
 @Injectable()
 export class FitnessMetricsService {
-    constructor(private readonly userProfileService: UserProfileService) { }
+    constructor(
+        private readonly userProfileService: UserProfileService,
+        private readonly nodemailer: NodemailerService
+    ) { }
 
     async getMetrics(userId: string): Promise<any> {
         const userProfile = await this.userProfileService.findOne(userId);
+
+        // this.nodemailer.sendMail()
 
         if (!userProfile) {
             throw new NotFoundException('User profile not found');

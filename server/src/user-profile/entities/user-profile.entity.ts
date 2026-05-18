@@ -2,18 +2,25 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    PrimaryGeneratedColumn,
+    PrimaryColumn,
     UpdateDateColumn,
     AfterInsert,
     AfterRemove,
     AfterUpdate,
+    OneToOne,
+    JoinColumn,
 } from 'typeorm';
 import { type ActivityLevel, type ActivityGoal, type TrainingGoalInput } from '../../utils/constants';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('user_profiles')
 export class UserProfile {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn()
     user_id: string;
+
+    @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'text' })
     gender: 'male' | 'female';
