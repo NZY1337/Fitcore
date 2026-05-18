@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { Dumbbell, Trophy, Shield, ClipboardList } from "lucide-react";
+import { Dumbbell, Trophy, Shield, ClipboardList, Sparkles, UtensilsCrossed } from "lucide-react";
 
 import {
     BoxCubeIcon,
@@ -65,6 +65,18 @@ const navItems: NavItem[] = [
         icon: <ClipboardList className="size-6" />,
         name: "My Plan",
         path: "/dashboard/my-plan",
+        userOnly: true,
+    },
+    {
+        icon: <Sparkles className="size-6" />,
+        name: "AI Plan",
+        path: "/dashboard/ai-plan",
+        userOnly: true,
+    },
+    {
+        icon: <UtensilsCrossed className="size-6" />,
+        name: "AI Meal Plan",
+        path: "/dashboard/ai-meal-plan",
         userOnly: true,
     },
     {

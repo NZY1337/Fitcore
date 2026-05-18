@@ -13,6 +13,9 @@ import { UserModule } from './user/user.module';
 import { ExercisesModule } from './exercises/exercises.module';
 import { AdminModule } from './admin/admin.module';
 import { WorkoutAssignmentsModule } from './workout-assignments/workout-assignments.module';
+import { AiWorkoutPlanModule } from './ai-workout-plan/ai-workout-plan.module';
+import { AiMealPlanModule } from './ai-meal-plan/ai-meal-plan.module';
+import { AiMealPlan } from './ai-meal-plan/entities/ai-meal-plan.entity';
 
 // interceptors
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -25,6 +28,7 @@ import { WeightLog } from './weight-logs/entities/weight-log.entity';
 import { UserSettings } from './settings/entities/settings.entity';
 import { WorkoutLog } from './workout-logs/entities/workout-log.entity';
 import { WorkoutAssignment } from './workout-assignments/entities/workout-assignment.entity';
+import { AiWorkoutPlan } from './ai-workout-plan/entities/ai-workout-plan.entity';
 
 // services
 import { SupabaseModule } from '../services/supabase/supabase.module';
@@ -39,7 +43,7 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.LOCAL_DB_URL,
-            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment],
+            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment, AiWorkoutPlan, AiMealPlan],
             synchronize: true,
         }),
         SupabaseModule,
@@ -55,6 +59,8 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         ExercisesModule,
         WorkoutAssignmentsModule,
         AdminModule,
+        AiWorkoutPlanModule,
+        AiMealPlanModule,
     ],
     providers: [{
         provide: APP_INTERCEPTOR,

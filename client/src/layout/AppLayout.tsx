@@ -3,9 +3,15 @@ import { Outlet } from "react-router";
 import AppHeader from "./AppHeader";
 import Backdrop from "./Backdrop";
 import AppSidebar from "./AppSidebar";
+import OnboardingWizard from "../components/onboarding/OnboardingWizard";
+import { useUserProfile } from "../hooks/useUserProfile";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const LayoutContent: React.FC = () => {
     const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+    const { userProfile, isPending } = useUserProfile();
+    const { isAdmin } = useCurrentUser();
+    const showOnboarding = !isPending && userProfile === null && !isAdmin;
 
     return (
         <div className="min-h-screen xl:flex">
@@ -21,6 +27,7 @@ const LayoutContent: React.FC = () => {
                 <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
                     <Outlet />
                 </div>
+                {showOnboarding && <OnboardingWizard />}
             </div>
         </div>
     );

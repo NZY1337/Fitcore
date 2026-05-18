@@ -25,6 +25,7 @@ function todayKey(): DayOfWeek {
 
 function ExerciseCard({ a }: { a: WorkoutAssignment }) {
     const [open, setOpen] = useState(false);
+    
     return (
         <div className="rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
             <button
