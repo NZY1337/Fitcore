@@ -3,6 +3,8 @@ export type ActivityGoal = 'cut' | 'maintain' | 'bulk';
 export type BmiWeightCategory = 'underweight' | 'normal_weight' | 'overweight' | 'obesity';
 export type TrainingGoalInput = 'strength' | 'hypertrophy' | 'endurance';
 
+export type NotificationType = 'info' | 'warning' | 'error';
+
 export const TRAINING_GOALS: Record<TrainingGoalInput, number> = {
     strength: 0.9,
     hypertrophy: 0.75,

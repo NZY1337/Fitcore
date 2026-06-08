@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NutritionLog } from './entities/nutrition-log.entity';
 import { CreateNutritionLogDto } from './dto/create-nutrition-log.dto';
 import { UpdateNutritionLogDto } from './dto/update-nutrition-log.dto';
@@ -9,9 +10,10 @@ import { UpdateNutritionLogDto } from './dto/update-nutrition-log.dto';
 export class NutritionLogsService {
     constructor(
         @InjectRepository(NutritionLog) private repo: Repository<NutritionLog>,
+        private eventEmitter: EventEmitter2,
     ) { }
 
-    create(userId: string, dto: CreateNutritionLogDto): Promise<NutritionLog> {
+    async create(userId: string, dto: CreateNutritionLogDto): Promise<NutritionLog> {
         const log = this.repo.create({
             user_id: userId,
             food_item: dto.food_item,
@@ -24,7 +26,12 @@ export class NutritionLogsService {
             note: dto.note ?? null,
             ...(dto.logged_at ? { logged_at: new Date(dto.logged_at) } : {}),
         });
-        return this.repo.save(log);
+
+        const saved = await this.repo.save(log);
+
+        // emit nutrition.created event
+        this.eventEmitter.emit('nutrition.created', { userId, foodItem: dto.food_item });
+        return saved;
     }
 
     findAll(userId: string, date?: string): Promise<NutritionLog[]> {
@@ -38,6 +45,7 @@ export class NutritionLogsService {
                 order: { logged_at: 'ASC' },
             });
         }
+
         return this.repo.find({
             where: { user_id: userId },
             order: { logged_at: 'ASC' },
@@ -47,6 +55,7 @@ export class NutritionLogsService {
     async update(userId: string, id: string, dto: UpdateNutritionLogDto): Promise<NutritionLog> {
         const log = await this.repo.findOneBy({ id, user_id: userId });
         if (!log) throw new NotFoundException('Nutrition log not found');
+
         if (dto.food_item !== undefined) log.food_item = dto.food_item;
         if (dto.meal_type !== undefined) log.meal_type = dto.meal_type ?? null;
         if (dto.calories !== undefined) log.calories = dto.calories;
@@ -56,6 +65,9 @@ export class NutritionLogsService {
         if (dto.serving_g !== undefined) log.serving_g = dto.serving_g ?? null;
         if (dto.note !== undefined) log.note = dto.note ?? null;
         if (dto.logged_at !== undefined) log.logged_at = new Date(dto.logged_at);
+
+        // emit nutrition.evidet event
+        this.eventEmitter.emit('nutrition.edited', { userId, foodItem: dto.food_item });
         return this.repo.save(log);
     }
 
@@ -63,5 +75,7 @@ export class NutritionLogsService {
         const log = await this.repo.findOneBy({ id, user_id: userId });
         if (!log) throw new NotFoundException('Nutrition log not found');
         await this.repo.remove(log);
+
+        this.eventEmitter.emit('nutrition.removed', { userId, foodItem: log.food_item })
     }
 }

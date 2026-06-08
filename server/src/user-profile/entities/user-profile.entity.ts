@@ -15,7 +15,7 @@ import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('user_profiles')
 export class UserProfile {
-    @PrimaryColumn()
+    @PrimaryColumn({ type: 'uuid' })
     user_id: string;
 
     @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
