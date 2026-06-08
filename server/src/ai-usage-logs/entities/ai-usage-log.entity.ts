@@ -10,7 +10,7 @@ export class AiUsageLog {
     @JoinColumn({ name: 'user_id' })
     user: UserEntity;
 
-    @Column({ type: 'text' })
+    @Column({ type: 'uuid' })
     user_id: string;
 
     @Column({ type: 'text' })

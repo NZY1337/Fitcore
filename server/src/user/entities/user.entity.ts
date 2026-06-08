@@ -3,7 +3,7 @@ import { Plan, Role } from "../../utils/constants";
 
 @Entity('users')
 export class UserEntity {
-    @PrimaryColumn()
+    @PrimaryColumn({ type: 'uuid' })
     id: string;
 
     @Column({ unique: true })

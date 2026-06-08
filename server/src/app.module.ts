@@ -18,6 +18,7 @@ import { AiMealPlanModule } from './ai-meal-plan/ai-meal-plan.module';
 import { AiMealPlan } from './ai-meal-plan/entities/ai-meal-plan.entity';
 import { AiUsageLogsModule } from './ai-usage-logs/ai-usage-logs.module';
 import { AiUsageLog } from './ai-usage-logs/entities/ai-usage-log.entity';
+import { Notification } from './notifications/entities/notification.entity';
 
 // interceptors
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -37,15 +38,19 @@ import { SupabaseModule } from '../services/supabase/supabase.module';
 import { NodemailerModule } from '../services/nodemailer/nodemailer.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskServiceModule } from '../services/taskservice/taskservice.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+
 
 @Module({
     imports: [
         ScheduleModule.forRoot(),
+        EventEmitterModule.forRoot(),
         ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.LOCAL_DB_URL,
-            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment, AiWorkoutPlan, AiMealPlan, AiUsageLog],
+            entities: [UserProfile, WorkoutLog, UserSettings, WeightLog, NutritionLog, UserEntity, WorkoutAssignment, AiWorkoutPlan, AiMealPlan, AiUsageLog, Notification],
             synchronize: true,
         }),
         SupabaseModule,
@@ -64,6 +69,7 @@ import { TaskServiceModule } from '../services/taskservice/taskservice.module';
         AiWorkoutPlanModule,
         AiMealPlanModule,
         AiUsageLogsModule,
+        NotificationsModule,
     ],
     providers: [{
         provide: APP_INTERCEPTOR,
