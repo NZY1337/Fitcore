@@ -24,6 +24,7 @@ const VARIANT_BORDER = [
     'border-purple-400 dark:border-purple-500',
     'border-emerald-400 dark:border-emerald-500',
 ];
+
 const VARIANT_BADGE = [
     'bg-brand-50 dark:bg-brand-500/10 text-brand-700 dark:text-brand-300',
     'bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300',
@@ -309,9 +310,11 @@ export default function AiMealPlanPage() {
         if (currentPlan?.selected_variant_index != null) {
             setChosenIndex(currentPlan.selected_variant_index);
         }
+
         if (!currentPlan && !isLoadingCurrent) {
             setShowWizard(true);
         }
+
     }, [currentPlan?.selected_variant_index, isLoadingCurrent]);
 
     const handleGenerate = async (dto: GenerateMealPlanDto) => {
@@ -331,6 +334,7 @@ export default function AiMealPlanPage() {
     return (
         <>
             <PageMeta title="AI Meal Plan" description="Plan alimentar personalizat generat cu AI" />
+
             <div className="space-y-6">
 
                 {/* Wizard */}
@@ -356,14 +360,15 @@ export default function AiMealPlanPage() {
                     <div className="flex flex-col items-center py-16 text-gray-400">
                         <Loader2 className="w-10 h-10 animate-spin mb-3 text-brand-500" />
                         <p className="text-sm font-medium">AI genereaza 3 planuri alimentare personalizate…</p>
-                        <p className="text-xs mt-1">Dureaza 10–20 secunde</p>
+                        <p className="text-xs mt-1">Dureaza 10-20 secunde</p>
                     </div>
                 )}
 
                 {/* Error */}
                 {generateError && (
                     <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
-                        <AlertCircle className="w-4 h-4 shrink-0" /> {generateError}
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        {generateError}
                     </div>
                 )}
 
