@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { Download, ChevronDown, Dumbbell } from 'lucide-react';
+import { Download, ChevronDown, ChevronUp, Dumbbell, Search, Trash2 } from 'lucide-react';
 import PageMeta from '../../../components/common/PageMeta';
 import Form from '../../../components/form/Form';
 import Input from '../../../components/form/input/InputField';
@@ -353,13 +353,14 @@ export default function WorkoutLogs() {
                         )}
 
                         {!isPending && workoutLogs.length > 0 && (
-                            <div className="mb-5">
+                            <div className="relative mb-5">
+                                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
                                     type="text"
                                     placeholder="Search exercise..."
-                                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent outline-none text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-300 dark:focus:border-brand-800 transition"
+                                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent outline-none text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-300 dark:focus:border-brand-800 transition"
                                 />
                             </div>
                         )}
@@ -382,50 +383,67 @@ export default function WorkoutLogs() {
                                                         onClick={() => toggleDay(day)}
                                                         className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-white/[0.03] hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
                                                     >
-                                                        <div className="flex items-center gap-3">
+                                                        <div className="flex items-center gap-3 flex-wrap">
                                                             <span className="text-sm font-semibold text-gray-800 dark:text-white/90">{day}</span>
-                                                            <span className="text-xs text-gray-400 dark:text-gray-500">
-                                                                {logs.length} {logs.length === 1 ? 'set' : 'sets'} · {totalVolume.toLocaleString()} kg total volume
-                                                            </span>
+                                                            <div className="flex items-center gap-1.5">
+                                                                <span className="inline-flex items-center rounded-full bg-gray-100 dark:bg-white/[0.07] px-2 py-0.5 text-[11px] font-medium text-gray-500 dark:text-gray-400">
+                                                                    {logs.length} {logs.length === 1 ? 'set' : 'sets'}
+                                                                </span>
+                                                                <span className="inline-flex items-center rounded-full bg-brand-50 dark:bg-brand-500/10 px-2 py-0.5 text-[11px] font-medium text-brand-600 dark:text-brand-400">
+                                                                    {totalVolume.toLocaleString()} kg vol.
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <span className="text-gray-400 text-xs">{open ? '▲' : '▼'}</span>
+                                                        {open
+                                                            ? <ChevronUp className="w-4 h-4 text-gray-400 shrink-0" />
+                                                            : <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
+                                                        }
                                                     </button>
 
                                                     {/* Accordion body */}
                                                     {open && (
                                                         <div className="overflow-x-auto">
                                                             <table className="w-full text-sm text-left">
-                                                                <thead >
-                                                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-xs uppercase text-gray-400 dark:text-gray-500">
-                                                                        <th className="px-4 pb-3 pt-2 font-medium">Exercise</th>
+                                                                <thead>
+                                                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                                                                        <th className="px-4 pb-3 pt-2 font-medium text-left">Exercise</th>
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center">Sets</th>
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center">Reps</th>
                                                                         <th className="pb-3 pt-2 pr-4 font-medium text-center">Weight</th>
-                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Greutatea maximă estimată pentru o singură repetare (formula Epley)">1RM ⓘ</th>
-                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Greutatea recomandată de antrenament bazată pe 1RM și obiectivul tău">Working wt. ⓘ</th>
-                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Volum total = seturi x repetări x greutate">Volume ⓘ</th>
-                                                                        <th className="pb-3 pt-2"></th>
+                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Estimated one-rep max (Epley formula)">1RM ⓘ</th>
+                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Recommended training weight based on your 1RM and training goal">Working wt. ⓘ</th>
+                                                                        <th className="pb-3 pt-2 pr-4 font-medium text-center" title="Total volume = sets × reps × weight">Volume ⓘ</th>
+                                                                        <th className="pb-3 pt-2 pr-4"></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                                                     {logs.map((log) => (
-                                                                        <tr key={log.id} className="text-gray-700 dark:text-gray-300" onClick={() => handleGetLatestWork(log)}>
-                                                                            <td className="px-4 py-3 font-medium text-gray-800 dark:text-white/90">{log.exercise}</td>
-                                                                            <td className="py-3 pr-4 text-center">{log.sets}</td>
-                                                                            <td className="py-3 pr-4 text-center">{log.reps}</td>
-                                                                            <td className="py-3 pr-4 text-center">{log.weight_kg} kg</td>
-                                                                            <td className="py-3 pr-4 text-center">{log.oneRepMax} kg</td>
-                                                                            <td className="py-3 pr-4 text-center">
+                                                                        <tr
+                                                                            key={log.id}
+                                                                            title="Click to load into guidance panel"
+                                                                            className="cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors"
+                                                                            onClick={() => handleGetLatestWork(log)}
+                                                                        >
+                                                                            <td className="px-4 py-3 font-medium text-gray-800 dark:text-white/90 capitalize">{log.exercise}</td>
+                                                                            <td className="py-3 pr-4 text-center tabular-nums">{log.sets}</td>
+                                                                            <td className="py-3 pr-4 text-center tabular-nums">{log.reps}</td>
+                                                                            <td className="py-3 pr-4 text-center tabular-nums">{log.weight_kg} kg</td>
+                                                                            <td className="py-3 pr-4 text-center tabular-nums">{log.oneRepMax} kg</td>
+                                                                            <td className="py-3 pr-4 text-center tabular-nums">
                                                                                 {log.workingWeight != null ? `${log.workingWeight} kg` : '—'}
                                                                             </td>
-                                                                            <td className="py-3 pr-4 text-center">{log.volume} kg</td>
+                                                                            <td className="py-3 pr-4 text-center tabular-nums">{log.volume} kg</td>
                                                                             <td className="py-3 pr-4 text-right">
                                                                                 <button
-                                                                                    onClick={() => handleDelete(log.id)}
+                                                                                    onClick={(e) => { e.stopPropagation(); handleDelete(log.id); }}
                                                                                     disabled={isDeleting && deletingId === log.id}
-                                                                                    className="text-xs text-error-500 hover:text-error-600 disabled:opacity-40"
+                                                                                    title="Delete"
+                                                                                    className="p-1.5 rounded-lg text-gray-400 hover:text-error-500 hover:bg-error-50 dark:hover:bg-error-500/10 transition-colors disabled:opacity-40"
                                                                                 >
-                                                                                    {isDeleting && deletingId === log.id ? 'Deleting...' : 'Delete'}
+                                                                                    {isDeleting && deletingId === log.id
+                                                                                        ? <span className="text-[10px]">…</span>
+                                                                                        : <Trash2 className="w-3.5 h-3.5" />
+                                                                                    }
                                                                                 </button>
                                                                             </td>
                                                                         </tr>
@@ -458,11 +476,16 @@ export default function WorkoutLogs() {
                     )}
 
                     <div id="log-set-form" className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-                        <div className="mb-6">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Log a Set</h2>
-                            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Record an exercise — one entry per set.
-                            </p>
+                        <div className="mb-6 flex items-start gap-3">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-500/10">
+                                <Dumbbell className="h-5 w-5 text-brand-600 dark:text-brand-400" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Log a Set</h2>
+                                <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+                                    Record an exercise — one entry per set.
+                                </p>
+                            </div>
                         </div>
 
                         {submitMessage && (

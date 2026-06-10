@@ -76,7 +76,6 @@ describe('AiMealPlanPage', () => {
     })
 
     it('shows the wizard when there is no current plan', () => {
-
         vi.mocked(useAiMealPlan).mockReturnValue({
             ...baseAiMealPlan,
             currentPlan: null,
@@ -138,7 +137,6 @@ describe('AiMealPlanPage', () => {
     });
 
     it('shows success banner after selecting a plan variant', async () => {
-        const mockSelectVariant = vi.fn().mockResolvedValue(undefined);
 
         vi.mocked(useAiMealPlan).mockReturnValue({
             ...baseAiMealPlan,
@@ -157,7 +155,6 @@ describe('AiMealPlanPage', () => {
                 }],
             },
 
-            selectVariant: mockSelectVariant,
         } as AiMealPlanHook);
 
         renderAiMealPlanPage();
@@ -169,7 +166,48 @@ describe('AiMealPlanPage', () => {
         });
     });
 
+    it('shows empty state', async () => {
+        vi.mocked(useAiMealPlan).mockReturnValue({
+            ...baseAiMealPlan,
+            isLoadingCurrent: false,
+            currentPlan: null,
+            isGenerating: false,
+        } as AiMealPlanHook);
 
+        renderAiMealPlanPage();
 
+        // Step through the wizard to trigger handleGenerate, which closes the wizard
+        fireEvent.click(screen.getByRole('button', { name: /continua/i }));
+        fireEvent.click(screen.getByRole('button', { name: /continua/i }));
+        fireEvent.click(screen.getByRole('button', { name: /genereaza 3 planuri/i }));
+
+        await waitFor(() => {
+            expect(screen.getByText('Configureaza preferintele si genereaza primul tau plan alimentar.')).toBeInTheDocument();
+        });
+    });
+
+    it('should display 3 cards', async () => {
+        vi.mocked(useAiMealPlan).mockReturnValue({
+            ...baseAiMealPlan,
+            currentPlan: {
+                id: 'plan-1',
+                user_id: 'user-1',
+                preferences: { allergies: [], avoid: [], diet_type: 'balanced', meals_per_day: 3 },
+                selected_variant_index: null,
+                is_activated: false,
+                created_at: '2026-01-01T00:00:00Z',
+                variants: [
+                    { name: 'Plan 1', description: '', daily_targets: { calories: 2000, protein: 150, carbs: 200, fat: 60 }, meals: [] },
+                    { name: 'Plan 2', description: '', daily_targets: { calories: 2200, protein: 160, carbs: 220, fat: 65 }, meals: [] },
+                    { name: 'Plan 3', description: '', daily_targets: { calories: 1800, protein: 140, carbs: 180, fat: 55 }, meals: [] },
+                ],
+            },
+            isGenerating: false,
+        } as AiMealPlanHook);
+
+        renderAiMealPlanPage();
+
+        expect(screen.getAllByRole('button', { name: /alege acest plan/i })).toHaveLength(3);
+    });
 })
 
