@@ -61,18 +61,19 @@ function renderAiMealPlanPage() {
 }
 
 
-function mockDefaultHooks() {
-    vi.mocked(useAiMealPlan).mockReturnValue({
-        ...baseAiMealPlan
-    } as any);
-}
-
 // -- Tests -- 
 
 describe('AiMealPlanPage', () => {
+    /*
+        now this is not mandatory.
+        when vi.clearAllMocks() is mandatory:
+            - when we have for example: expect(mockFn).toHaveBeenCalledTimes(1)
+            - if I add a test like this, and I have another test that calls this again,
+              I will have count set 2(tohavebeencaled 2 times) - thats why we need to 
+              reset mocks on each test/interation
+    */
     beforeEach(() => {
         vi.clearAllMocks();
-        mockDefaultHooks();
     })
 
     it('shows the wizard when there is no current plan', () => {
