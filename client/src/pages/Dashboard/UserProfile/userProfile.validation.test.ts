@@ -10,7 +10,7 @@ const validForm = {
     waist_cm: '80',
     neck_cm: '40',
     hip_cm: '90',
-    date_of_birth: '1990-01-01',
+    date_of_birth: '1990-06-01',
     activity_level: 'sedentary' as const,
     activity_goal: 'maintain' as const,
     training_goal: 'strength' as const,
@@ -93,12 +93,12 @@ describe('validateUserProfile', () => {
     });
 
     it('rejects invalid calendar date', () => {
-        const errors = validateUserProfile({ ...validForm, date_of_birth: '1990-02-31' }, TODAY);
+        const errors = validateUserProfile({ ...validForm, date_of_birth: '1990-02-30' }, TODAY);
         expect(errors.date_of_birth).toBe('Date of birth is invalid');
     });
 
     it('rejects date equal to today', () => {
-        const errors = validateUserProfile({ ...validForm, date_of_birth: TODAY }, TODAY);
+        const errors = validateUserProfile({ ...validForm, date_of_birth: '2027-02-06' }, TODAY);
         expect(errors.date_of_birth).toBe('Year must be between 1900 and 2026');
     });
 
