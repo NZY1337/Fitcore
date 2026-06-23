@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Sparkles, Loader2, X } from 'lucide-react';
 import type { GenerateMealPlanDto } from '../../../services/ai-meal-plan';
 
-const COMMON_ALLERGIES = [
+export const COMMON_ALLERGIES = [
     'Lactoza', 'Gluten', 'Oua', 'Arahide', 'Nuci', 'Soia', 'Peste', 'Fructe de mare', 'Susan',
 ];
 
@@ -15,7 +15,7 @@ const DIET_TYPES = [
 
 const MEALS_OPTIONS = [3, 4, 5, 6];
 
-type WizardProps = {
+export type WizardProps = {
     onGenerate: (dto: GenerateMealPlanDto) => void;
     isGenerating: boolean;
 };
@@ -41,6 +41,8 @@ export function Wizard({ onGenerate, isGenerating }: WizardProps) {
         if (e.key === 'Enter') { e.preventDefault(); addAvoid(); }
     };
 
+    console.log(allergies);
+
     const handleGenerate = () => {
         onGenerate({ allergies, avoid, diet_type: dietType, meals_per_day: mealsPerDay });
     };
@@ -58,7 +60,7 @@ export function Wizard({ onGenerate, isGenerating }: WizardProps) {
             </div>
 
             {/* Progress */}
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-6" data-testid="wizard-progress-bar">
                 {[1, 2, 3].map(s => (
                     <div key={s} className="flex items-center gap-2">
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${s < step ? 'bg-brand-500 text-white' : s === step ? 'bg-brand-100 dark:bg-brand-500/20 text-brand-600' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'}`}>
@@ -78,6 +80,7 @@ export function Wizard({ onGenerate, isGenerating }: WizardProps) {
                         <div className="flex flex-wrap gap-2">
                             {COMMON_ALLERGIES.map(a => (
                                 <button key={a} onClick={() => toggleAllergy(a)}
+                                    aria-pressed={allergies.includes(a)} // for tests purposes
                                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${allergies.includes(a) ? 'bg-red-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
                                     {a}
                                 </button>
@@ -90,6 +93,7 @@ export function Wizard({ onGenerate, isGenerating }: WizardProps) {
                         <p className="text-xs text-gray-400 mb-2">Scrie un aliment si apasa Enter.</p>
                         <div className="flex gap-2">
                             <input
+                                aria-label="avoid-input"
                                 value={avoidInput}
                                 onChange={e => setAvoidInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
@@ -105,7 +109,7 @@ export function Wizard({ onGenerate, isGenerating }: WizardProps) {
                                 {avoid.map(a => (
                                     <span key={a} className="flex items-center gap-1 px-2 py-1 bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-300 text-xs rounded-full">
                                         {a}
-                                        <button onClick={() => setAvoid(prev => prev.filter(x => x !== a))}>
+                                        <button aria-label={a} onClick={() => setAvoid(prev => prev.filter(x => x !== a))}>
                                             <X className="w-3 h-3" />
                                         </button>
                                     </span>
@@ -149,17 +153,17 @@ export function Wizard({ onGenerate, isGenerating }: WizardProps) {
             {/* Navigation */}
             <div className="flex items-center justify-between mt-6">
                 {step > 1 ? (
-                    <button onClick={() => setStep(s => s - 1)} className="text-sm font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <button data-testid="wizard-back-button" onClick={() => setStep(s => s - 1)} className="text-sm font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                         ← Inapoi
                     </button>
                 ) : <div />}
 
                 {step < 3 ? (
-                    <button onClick={() => setStep(s => s + 1)} className="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl transition-colors">
+                    <button data-testid="wizard-continue-button" onClick={() => setStep(s => s + 1)} className="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl transition-colors">
                         Continua →
                     </button>
                 ) : (
-                    <button onClick={handleGenerate} disabled={isGenerating}
+                    <button data-testid="wizard-generate-button" onClick={handleGenerate} disabled={isGenerating}
                         className="flex items-center gap-2 px-5 py-2.5 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-sm font-semibold rounded-xl transition-colors">
                         {isGenerating ? <><Loader2 className="w-4 h-4 animate-spin" /> Se genereaza…</> : <><Sparkles className="w-4 h-4" /> Genereaza 3 planuri</>}
                     </button>
