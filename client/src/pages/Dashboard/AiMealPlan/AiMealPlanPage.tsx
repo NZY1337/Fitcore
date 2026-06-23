@@ -43,7 +43,7 @@ export default function AiMealPlanPage() {
             <div className="space-y-6">
 
                 {/* Wizard */}
-                {showWizard && (
+                {true && (
                     <Wizard onGenerate={handleGenerate} isGenerating={isGenerating} />
                 )}
 
