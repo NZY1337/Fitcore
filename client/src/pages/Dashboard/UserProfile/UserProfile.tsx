@@ -91,9 +91,11 @@ export default function UserProfile() {
 
     const onChange = <K extends keyof FormState>(key: K, value: FormState[K]) => {
         setForm((prev) => ({ ...prev, [key]: value }));
+
         if (errors[key]) {
             setErrors((prev) => ({ ...prev, [key]: undefined }));
         }
+
         if (submitError) setSubmitError('');
         if (submitMessage) setSubmitMessage('');
     };
@@ -122,6 +124,7 @@ export default function UserProfile() {
                 onSuccess: () => setSubmitMessage('Profile updated successfully.'),
                 onError: (mutationError: unknown) => setSubmitError(getErrorMessage(mutationError)),
             });
+
             return;
         }
 
@@ -152,222 +155,221 @@ export default function UserProfile() {
                 title="User Profile"
                 description="Create or update your user profile"
             />
-            <div className="grid grid-cols-12 gap-4 md:gap-6">
-                <div className="col-span-12 xl:col-span-8">
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-                        <div className="mb-6">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Profile Details</h2>
-                            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Fill in your body metrics and goals. This data is used by fitness metrics calculations.
-                            </p>
+
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div className="mb-6">
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">Profile Details</h2>
+                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            Fill in your body metrics and goals. This data is used by fitness metrics calculations.
+                        </p>
+                    </div>
+
+                    {isPending && (
+                        <div className="mb-4">
+                            <Alert
+                                variant="info"
+                                title="Loading profile"
+                                message="We are fetching your existing profile data."
+                            />
+                        </div>
+                    )}
+
+                    {error && !hasExistingProfile && (
+                        <div className="mb-4">
+                            <Alert
+                                variant="warning"
+                                title="No existing profile"
+                                message="You can create your profile now."
+                            />
+                        </div>
+                    )}
+
+                    {submitMessage && (
+                        <div className="mb-4">
+                            <Alert variant="success" title="Success" message={submitMessage} />
+                        </div>
+                    )}
+
+                    {submitError && (
+                        <div className="mb-4">
+                            <Alert variant="error" title="Submission failed" message={submitError} />
+                        </div>
+                    )}
+
+                    <Form onSubmit={handleSubmit} className="space-y-5">
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                            <div>
+                                <Label htmlFor="gender">Gender</Label>
+                                <Select
+                                    key={`gender-${form.gender}`}
+                                    options={[
+                                        { value: 'male', label: 'Male' },
+                                        { value: 'female', label: 'Female' },
+                                    ]}
+                                    placeholder="Select gender"
+                                    defaultValue={form.gender}
+                                    onChange={(value) => onChange('gender', value as FormState['gender'])}
+                                />
+                                {errors.gender && <p className="mt-1.5 text-xs text-error-500">{errors.gender}</p>}
+                            </div>
+
+                            <div>
+                                <Label htmlFor="date_of_birth">Date of Birth</Label>
+                                <Input
+                                    id="date_of_birth"
+                                    type="date"
+                                    min={MIN_BIRTH_DATE}
+                                    max={todayIso}
+                                    value={form.date_of_birth}
+                                    onChange={(e) => onChange('date_of_birth', e.target.value)}
+                                    error={Boolean(errors.date_of_birth)}
+                                    hint={errors.date_of_birth}
+                                />
+                            </div>
                         </div>
 
-                        {isPending && (
-                            <div className="mb-4">
-                                <Alert
-                                    variant="info"
-                                    title="Loading profile"
-                                    message="We are fetching your existing profile data."
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                            <div>
+                                <Label htmlFor="weight_kg">Weight (kg)</Label>
+                                <Input
+                                    id="weight_kg"
+                                    type="number"
+                                    step={0.1}
+                                    min="1"
+                                    value={form.weight_kg}
+                                    onChange={(e) => onChange('weight_kg', e.target.value)}
+                                    error={Boolean(errors.weight_kg)}
+                                    hint={errors.weight_kg}
+                                    placeholder="e.g. 82"
                                 />
                             </div>
-                        )}
 
-                        {error && !hasExistingProfile && (
-                            <div className="mb-4">
-                                <Alert
-                                    variant="warning"
-                                    title="No existing profile"
-                                    message="You can create your profile now."
+                            <div>
+                                <Label htmlFor="height_cm">Height (cm)</Label>
+                                <Input
+                                    id="height_cm"
+                                    type="number"
+                                    min='1'
+                                    step={0.1}
+                                    value={form.height_cm}
+                                    onChange={(e) => onChange('height_cm', e.target.value)}
+                                    error={Boolean(errors.height_cm)}
+                                    hint={errors.height_cm}
+                                    placeholder="e.g. 180"
                                 />
                             </div>
-                        )}
 
-                        {submitMessage && (
-                            <div className="mb-4">
-                                <Alert variant="success" title="Success" message={submitMessage} />
-                            </div>
-                        )}
-
-                        {submitError && (
-                            <div className="mb-4">
-                                <Alert variant="error" title="Submission failed" message={submitError} />
-                            </div>
-                        )}
-
-                        <Form onSubmit={handleSubmit} className="space-y-5">
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                                <div>
-                                    <Label htmlFor="gender">Gender</Label>
-                                    <Select
-                                        key={`gender-${form.gender}`}
-                                        options={[
-                                            { value: 'male', label: 'Male' },
-                                            { value: 'female', label: 'Female' },
-                                        ]}
-                                        placeholder="Select gender"
-                                        defaultValue={form.gender}
-                                        onChange={(value) => onChange('gender', value as FormState['gender'])}
-                                    />
-                                    {errors.gender && <p className="mt-1.5 text-xs text-error-500">{errors.gender}</p>}
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="date_of_birth">Date of Birth</Label>
-                                    <Input
-                                        id="date_of_birth"
-                                        type="date"
-                                        min={MIN_BIRTH_DATE}
-                                        max={todayIso}
-                                        value={form.date_of_birth}
-                                        onChange={(e) => onChange('date_of_birth', e.target.value)}
-                                        error={Boolean(errors.date_of_birth)}
-                                        hint={errors.date_of_birth}
-                                    />
-                                </div>
+                            <div>
+                                <Label htmlFor="waist_cm">Waist (cm)</Label>
+                                <Input
+                                    id="waist_cm"
+                                    type="number"
+                                    step={0.1}
+                                    value={form.waist_cm}
+                                    onChange={(e) => onChange('waist_cm', e.target.value)}
+                                    error={Boolean(errors.waist_cm)}
+                                    hint={errors.waist_cm}
+                                    placeholder="e.g. 86"
+                                />
                             </div>
 
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                                <div>
-                                    <Label htmlFor="weight_kg">Weight (kg)</Label>
-                                    <Input
-                                        id="weight_kg"
-                                        type="number"
-                                        step={0.1}
-                                        min="1"
-                                        value={form.weight_kg}
-                                        onChange={(e) => onChange('weight_kg', e.target.value)}
-                                        error={Boolean(errors.weight_kg)}
-                                        hint={errors.weight_kg}
-                                        placeholder="e.g. 82"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="height_cm">Height (cm)</Label>
-                                    <Input
-                                        id="height_cm"
-                                        type="number"
-                                        min='1'
-                                        step={0.1}
-                                        value={form.height_cm}
-                                        onChange={(e) => onChange('height_cm', e.target.value)}
-                                        error={Boolean(errors.height_cm)}
-                                        hint={errors.height_cm}
-                                        placeholder="e.g. 180"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="waist_cm">Waist (cm)</Label>
-                                    <Input
-                                        id="waist_cm"
-                                        type="number"
-                                        step={0.1}
-                                        value={form.waist_cm}
-                                        onChange={(e) => onChange('waist_cm', e.target.value)}
-                                        error={Boolean(errors.waist_cm)}
-                                        hint={errors.waist_cm}
-                                        placeholder="e.g. 86"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="neck_cm">Neck (cm)</Label>
-                                    <Input
-                                        id="neck_cm"
-                                        type="number"
-                                        step={0.1}
-                                        value={form.neck_cm}
-                                        onChange={(e) => onChange('neck_cm', e.target.value)}
-                                        error={Boolean(errors.neck_cm)}
-                                        hint={errors.neck_cm}
-                                        placeholder="e.g. 39"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="hip_cm">Hip (cm)</Label>
-                                    <Input
-                                        id="hip_cm"
-                                        type="number"
-                                        step={0.1}
-                                        value={form.hip_cm}
-                                        onChange={(e) => onChange('hip_cm', e.target.value)}
-                                        error={Boolean(errors.hip_cm)}
-                                        hint={errors.hip_cm}
-                                        placeholder="e.g. 95"
-                                    />
-                                </div>
+                            <div>
+                                <Label htmlFor="neck_cm">Neck (cm)</Label>
+                                <Input
+                                    id="neck_cm"
+                                    type="number"
+                                    step={0.1}
+                                    value={form.neck_cm}
+                                    onChange={(e) => onChange('neck_cm', e.target.value)}
+                                    error={Boolean(errors.neck_cm)}
+                                    hint={errors.neck_cm}
+                                    placeholder="e.g. 39"
+                                />
                             </div>
 
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-                                <div>
-                                    <Label htmlFor="activity_level">Activity Level</Label>
-                                    <Select
-                                        key={`activity_level-${form.activity_level}`}
-                                        options={[
-                                            { value: 'sedentary', label: 'Sedentary' },
-                                            { value: 'lightly_active', label: 'Lightly active' },
-                                            { value: 'moderately_active', label: 'Moderately active' },
-                                            { value: 'very_active', label: 'Very active' },
-                                            { value: 'extra_active', label: 'Extra active' },
-                                        ]}
-                                        placeholder="Select activity level"
-                                        defaultValue={form.activity_level}
-                                        onChange={(value) => onChange('activity_level', value as FormState['activity_level'])}
-                                    />
-                                    {errors.activity_level && <p className="mt-1.5 text-xs text-error-500">{errors.activity_level}</p>}
-                                </div>
+                        </div>
 
-                                <div>
-                                    <Label htmlFor="activity_goal">Activity Goal</Label>
-                                    <Select
-                                        key={`activity_goal-${form.activity_goal}`}
-                                        options={[
-                                            { value: 'cut', label: 'Cut' },
-                                            { value: 'maintain', label: 'Maintain' },
-                                            { value: 'bulk', label: 'Bulk' },
-                                        ]}
-                                        placeholder="Select activity goal"
-                                        defaultValue={form.activity_goal}
-                                        onChange={(value) => onChange('activity_goal', value as FormState['activity_goal'])}
-                                    />
-                                    {errors.activity_goal && <p className="mt-1.5 text-xs text-error-500">{errors.activity_goal}</p>}
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="training_goal">Training Goal</Label>
-                                    <Select
-                                        key={`training_goal-${form.training_goal}`}
-                                        options={[
-                                            { value: 'strength', label: 'Strength' },
-                                            { value: 'hypertrophy', label: 'Hypertrophy' },
-                                            { value: 'endurance', label: 'Endurance' },
-                                        ]}
-                                        placeholder="Select training goal"
-                                        defaultValue={form.training_goal}
-                                        onChange={(value) => onChange('training_goal', value as FormState['training_goal'])}
-                                    />
-                                    {errors.training_goal && <p className="mt-1.5 text-xs text-error-500">{errors.training_goal}</p>}
-                                </div>
+                        <div className="grid grid-cols-2 gap-5">
+                            <div>
+                                <Label htmlFor="hip_cm">Hip (cm)</Label>
+                                <Input
+                                    id="hip_cm"
+                                    type="number"
+                                    step={0.1}
+                                    value={form.hip_cm}
+                                    onChange={(e) => onChange('hip_cm', e.target.value)}
+                                    error={Boolean(errors.hip_cm)}
+                                    hint={errors.hip_cm}
+                                    placeholder="e.g. 95"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="activity_level">Activity Level</Label>
+                                <Select
+                                    key={`activity_level-${form.activity_level}`}
+                                    options={[
+                                        { value: 'sedentary', label: 'Sedentary' },
+                                        { value: 'lightly_active', label: 'Lightly active' },
+                                        { value: 'moderately_active', label: 'Moderately active' },
+                                        { value: 'very_active', label: 'Very active' },
+                                        { value: 'extra_active', label: 'Extra active' },
+                                    ]}
+                                    placeholder="Select activity level"
+                                    defaultValue={form.activity_level}
+                                    onChange={(value) => onChange('activity_level', value as FormState['activity_level'])}
+                                />
+                                {errors.activity_level && <p className="mt-1.5 text-xs text-error-500">{errors.activity_level}</p>}
                             </div>
 
-                            <div className="pt-2">
-                                <Button disabled={isSubmitting}>
-                                    {isSubmitting ? 'Saving...' : hasExistingProfile ? 'Update Profile' : 'Create Profile'}
+                            <div>
+                                <Label htmlFor="activity_goal">Activity Goal</Label>
+                                <Select
+                                    key={`activity_goal-${form.activity_goal}`}
+                                    options={[
+                                        { value: 'cut', label: 'Cut' },
+                                        { value: 'maintain', label: 'Maintain' },
+                                        { value: 'bulk', label: 'Bulk' },
+                                    ]}
+                                    placeholder="Select activity goal"
+                                    defaultValue={form.activity_goal}
+                                    onChange={(value) => onChange('activity_goal', value as FormState['activity_goal'])}
+                                />
+                                {errors.activity_goal && <p className="mt-1.5 text-xs text-error-500">{errors.activity_goal}</p>}
+                            </div>
+
+                            <div>
+                                <Label htmlFor="training_goal">Training Goal</Label>
+                                <Select
+                                    key={`training_goal-${form.training_goal}`}
+                                    options={[
+                                        { value: 'strength', label: 'Strength' },
+                                        { value: 'hypertrophy', label: 'Hypertrophy' },
+                                        { value: 'endurance', label: 'Endurance' },
+                                    ]}
+                                    placeholder="Select training goal"
+                                    defaultValue={form.training_goal}
+                                    onChange={(value) => onChange('training_goal', value as FormState['training_goal'])}
+                                />
+                                {errors.training_goal && <p className="mt-1.5 text-xs text-error-500">{errors.training_goal}</p>}
+                            </div>
+                        </div>
+
+                        <div className="pt-2">
+                            <Button disabled={isSubmitting}>
+                                {isSubmitting ? 'Saving...' : hasExistingProfile ? 'Update Profile' : 'Create Profile'}
+                            </Button>
+
+                            {hasExistingProfile && (
+                                <Button disabled={isDeleting} variant="outline" className="ml-3" onClick={handleDeleteProfile}>
+                                    {isDeleting && 'Deleting...'}
+                                    {hasExistingProfile && !isDeleting && 'Delete Profile'}
                                 </Button>
-
-                                {hasExistingProfile && (
-                                    <Button disabled={isDeleting} variant="outline" className="ml-3" onClick={handleDeleteProfile}>
-                                        {isDeleting && 'Deleting...'}
-                                        {hasExistingProfile && !isDeleting && 'Delete Profile'}
-                                    </Button>
-                                )}
-                            </div>
-                        </Form>
-                    </div>
+                            )}
+                        </div>
+                    </Form>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

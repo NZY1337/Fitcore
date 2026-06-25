@@ -33,7 +33,7 @@ export default function Macros() {
     return (
         <>
             <h3 className="mb-4 text-sm font-semibold text-gray-800 dark:text-white/90">Daily Macros</h3>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
                 <RenderSingleMacro label="Protein" value={macros.protein} />
                 <RenderSingleMacro label="Fat" value={macros.fat} />
                 <RenderSingleMacro label="Carbs" value={macros.carbs} />
