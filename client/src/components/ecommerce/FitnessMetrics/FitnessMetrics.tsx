@@ -1,8 +1,6 @@
 import { Link } from 'react-router';
 import { useFitnessMetrics } from '../../../hooks/useFitnessMetrics';
 import Metrics from './Metrics';
-import Macros from './Macros';
-import HeartRateZones from './HeartRateZones';
 
 export default function FitnessMetrics() {
     const { fitnessMetrics, isPending, error } = useFitnessMetrics();
@@ -30,20 +28,5 @@ export default function FitnessMetrics() {
         );
     }
 
-    return (
-        <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6">
-                <Metrics />
-            </div>
-
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-                <Macros />
-            </div>
-
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-                <HeartRateZones />
-            </div>
-
-        </div>
-    );
+    return <Metrics />
 }
