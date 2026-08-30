@@ -45,8 +45,11 @@ export default function HeartRateZones() {
 
     const { heartRateZones } = fitnessMetrics;
 
+
+
+
     return (
-        <>
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
             <h3 className="mb-4 text-sm font-semibold text-gray-800 dark:text-white/90">Heart Rate Zones</h3>
             <div className="space-y-2">
                 {(Object.entries(heartRateZones) as [string, { min: number; max: number }][]).map(([zone, { min, max }]) => (
@@ -60,6 +63,6 @@ export default function HeartRateZones() {
                     </div>
                 ))}
             </div>
-        </>
+        </div >
     );
 }

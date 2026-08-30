@@ -3,6 +3,8 @@ export type ActivityGoal = 'cut' | 'maintain' | 'bulk';
 export type BmiWeightCategory = 'underweight' | 'normal_weight' | 'overweight' | 'obesity';
 export type TrainingGoalInput = 'strength' | 'hypertrophy' | 'endurance';
 
+export type NotificationType = 'info' | 'warning' | 'error';
+
 export const TRAINING_GOALS: Record<TrainingGoalInput, number> = {
     strength: 0.9,
     hypertrophy: 0.75,
@@ -12,6 +14,17 @@ export const TRAINING_GOALS: Record<TrainingGoalInput, number> = {
 export type BmiOutput = {
     bmi: number;
     category: BmiWeightCategory;
+}
+
+export enum Plan {
+    FREE = 'free',
+    PRO = 'pro',
+    PREMIUM = 'premium',
+}
+
+export enum Role {
+    USER = 'user',
+    ADMIN = 'admin',
 }
 
 export const BMI_VALUES = {

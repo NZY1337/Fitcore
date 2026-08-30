@@ -20,7 +20,6 @@ export function validateUserProfile(
     todayIso: string,
 ): UserProfileFormErrors {
     const nextErrors: UserProfileFormErrors = {};
-
     if (!values.gender) nextErrors.gender = 'Gender is required';
 
     const weight = asNumber(values.weight_kg);
@@ -62,6 +61,7 @@ export function validateUserProfile(
             const currentYear = new Date().getFullYear();
 
             if (year < 1900 || year > currentYear) {
+                console.log(year);
                 nextErrors.date_of_birth = `Year must be between 1900 and ${currentYear}`;
             } else {
                 const selectedDate = new Date(Date.UTC(year, month - 1, day));

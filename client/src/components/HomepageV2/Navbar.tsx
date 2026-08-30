@@ -13,7 +13,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-black flex items-center justify-center text-white font-black italic text-xl">F</div>
-                    <span className="text-xl font-black italic tracking-tighter uppercase">Fitcore</span>
+                    <span className="text-xl font-black italic tracking-tighter uppercase">Fitforge</span>
                 </div>
 
                 <div className="hidden md:flex items-center gap-10 text-[13px] font-bold tracking-widest uppercase">

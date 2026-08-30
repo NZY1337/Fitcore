@@ -5,9 +5,6 @@ import type { WorkoutLog } from '../../../services/workout-logs';
 import type { CreateUserProfileDto } from '../../../services/user-profile';
 import type { TrainingGoalSettings } from '../../../services/settings';
 
-type WorkingWeightGuidanceProps = {
-    latestLog?: WorkoutLog;
-};
 
 const TRAINING_GOAL_LABELS = {
     strength: {
@@ -56,7 +53,7 @@ const scrollToLogForm = () => {
     exerciseInput?.focus({ preventScroll: true });
 };
 
-export default function WorkingWeightGuidance({ latestLog }: WorkingWeightGuidanceProps) {
+export default function WorkingWeightGuidance({ latestLog }: { latestLog: WorkoutLog }) {
     const { userProfile, isPending } = useUserProfile();
     const { settings, isPending: isSettingsPending } = useSettings();
 

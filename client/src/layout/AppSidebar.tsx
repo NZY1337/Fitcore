@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import { Dumbbell, Trophy, Shield, ClipboardList, Sparkles, UtensilsCrossed, BarChart2 } from "lucide-react";
 
-// Assume these icons are imported from an icon library
 import {
     BoxCubeIcon,
     BoltIcon,
@@ -14,11 +14,14 @@ import {
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 type NavItem = {
     name: string;
     icon: React.ReactNode;
     path?: string;
+    adminOnly?: boolean;
+    userOnly?: boolean;
     subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
@@ -27,27 +30,72 @@ const navItems: NavItem[] = [
         icon: <GridIcon />,
         name: "Dashboard",
         path: "/dashboard",
-        // subItems: [{ name: "User Profile", path: "/user-profile", pro: false }],
     },
     {
         icon: <CalenderIcon />,
         name: "User Profile",
         path: "/dashboard/user-profile",
+        userOnly: true,
     },
     {
         icon: <BoltIcon />,
         name: "Workout Logs",
         path: "/dashboard/workout-logs",
+        userOnly: true,
     },
     {
         icon: <PieChartIcon />,
         name: "Weight Log",
         path: "/dashboard/weight-logs",
+        userOnly: true,
     },
     {
         icon: <BoxCubeIcon />,
         name: "Nutrition",
         path: "/dashboard/nutrition",
+        userOnly: true,
+    },
+    {
+        icon: <Dumbbell className="size-6" />,
+        name: "Exercises",
+        path: "/dashboard/exercises",
+        adminOnly: true,
+    },
+    {
+        icon: <ClipboardList className="size-6" />,
+        name: "My Plan",
+        path: "/dashboard/my-plan",
+        userOnly: true,
+    },
+    {
+        icon: <Sparkles className="size-6" />,
+        name: "AI Plan",
+        path: "/dashboard/ai-plan",
+        userOnly: true,
+    },
+    {
+        icon: <UtensilsCrossed className="size-6" />,
+        name: "AI Meal Plan",
+        path: "/dashboard/ai-meal-plan",
+        userOnly: true,
+    },
+    {
+        icon: <Trophy className="size-6" />,
+        name: "Personal Records",
+        path: "/dashboard/personal-records",
+        userOnly: true,
+    },
+    {
+        icon: <Shield className="size-6" />,
+        name: "Admin",
+        path: "/dashboard/admin",
+        adminOnly: true,
+    },
+    {
+        icon: <BarChart2 className="size-6" />,
+        name: "AI Usage",
+        path: "/dashboard/admin/ai-usage",
+        adminOnly: true,
     },
     {
         icon: <ListIcon />,
@@ -60,6 +108,7 @@ const navItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
     const location = useLocation();
+    const { isAdmin } = useCurrentUser();
 
     const [openSubmenu, setOpenSubmenu] = useState<{
         type: "main" | "others";
@@ -70,17 +119,21 @@ const AppSidebar: React.FC = () => {
     );
     const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-    // const isActive = (path: string) => location.pathname === path;
     const isActive = useCallback(
         (path: string) => location.pathname === path,
         [location.pathname]
     );
 
+    const visibleItems = navItems.filter(item => {
+        if (item.adminOnly && !isAdmin) return false;
+        if (item.userOnly && isAdmin) return false;
+        return true;
+    });
+
     useEffect(() => {
         let submenuMatched = false;
         ["main"].forEach((menuType) => {
-            const items = navItems;
-            items.forEach((nav, index) => {
+            visibleItems.forEach((nav, index) => {
                 if (nav.subItems) {
                     nav.subItems.forEach((subItem) => {
                         if (isActive(subItem.path)) {
@@ -98,7 +151,7 @@ const AppSidebar: React.FC = () => {
         if (!submenuMatched) {
             setOpenSubmenu(null);
         }
-    }, [location, isActive]);
+    }, [location, isActive, isAdmin]);
 
     useEffect(() => {
         if (openSubmenu !== null) {
@@ -240,7 +293,7 @@ const AppSidebar: React.FC = () => {
     );
 
     return (
-        <aside className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+        <aside className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200
         ${isExpanded || isMobileOpen
                 ? "w-[290px]"
                 : isHovered
@@ -251,12 +304,10 @@ const AppSidebar: React.FC = () => {
         lg:translate-x-0`}
             onMouseEnter={() => !isExpanded && setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}>
-            {/* <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"}`}> */}
             <div className={`py-8 flex`}>
                 <Link to="/">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
-                            {/* <p className="text-gray-800 dark:text-white font-bold tracking-widest">FLEXIFY</p> */}
                             <div className="flex flex-col items-center max-w-xs">
                                 <Link to="/" className="block mb-4">
                                     <div className="flex items-center gap-4">
@@ -266,7 +317,7 @@ const AppSidebar: React.FC = () => {
                                             </span>
                                         </div>
                                         <span className="font-black text-2xl tracking-tighter text-black dark:text-white uppercase italic">
-                                            FitCore
+                                            Fitforge
                                         </span>
                                     </div>
                                 </Link>
@@ -301,24 +352,8 @@ const AppSidebar: React.FC = () => {
                                     <HorizontaLDots className="size-6" />
                                 )}
                             </h2>
-                            {renderMenuItems(navItems, "main")}
+                            {renderMenuItems(visibleItems, "main")}
                         </div>
-                        {/* OTHERS */}
-                        {/* <div className="">
-                            <h2
-                                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                                    ? "lg:justify-center"
-                                    : "justify-start"
-                                    }`}
-                            >
-                                {isExpanded || isHovered || isMobileOpen ? (
-                                    "Others"
-                                ) : (
-                                    <HorizontaLDots />
-                                )}
-                            </h2>
-                            {renderMenuItems(othersItems, "others")}
-                        </div> */}
                     </div>
                 </nav>
                 {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}

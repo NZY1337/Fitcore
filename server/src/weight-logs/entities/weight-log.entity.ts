@@ -3,12 +3,19 @@ import {
     CreateDateColumn,
     Entity,
     PrimaryGeneratedColumn,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('weight_logs')
 export class WeightLog {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'uuid' })
     user_id: string;

@@ -91,7 +91,7 @@ const AppHeader: React.FC = () => {
                                 </span>
                             </div>
                             <span className="font-black text-2xl tracking-tighter text-black dark:text-white uppercase italic">
-                                FitCore
+                                Fitforge
                             </span>
                         </div>
                     </Link>

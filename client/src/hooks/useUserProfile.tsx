@@ -20,6 +20,8 @@ export const useUserProfile = () => {
             return getUserProfile(token);
         },
         enabled: !!token,
+        retry: false,
+        staleTime: 5 * 60 * 1000,
     });
 
     const createUserProfileMutation = useMutation({

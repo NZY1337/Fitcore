@@ -154,7 +154,7 @@ export default function Settings() {
                                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{GOAL_DESCRIPTIONS[goal]}</p>
                                         </div>
 
-                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-6">
                                             <div>
                                                 <Label htmlFor={`${goal}-workingWeightMultiplier`}>Working Weight Multiplier</Label>
                                                 <Input
@@ -182,9 +182,7 @@ export default function Settings() {
                                                     hint={errors[goal].progressionIncrementKg}
                                                 />
                                             </div>
-                                        </div>
 
-                                        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
                                             <div>
                                                 <Label htmlFor={`${goal}-minReps`}>Min Reps</Label>
                                                 <Input
@@ -198,7 +196,9 @@ export default function Settings() {
                                                     hint={errors[goal].minReps}
                                                 />
                                             </div>
+                                        </div>
 
+                                        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-6">
                                             <div>
                                                 <Label htmlFor={`${goal}-maxReps`}>Max Reps</Label>
                                                 <Input
@@ -242,7 +242,7 @@ export default function Settings() {
                                             </div>
                                         </div>
 
-                                        <div className="mt-5">
+                                        <div className="mt-5 w-1/2">
                                             <Label htmlFor={`${goal}-focus`}>Coaching Focus</Label>
                                             <TextArea
                                                 placeholder="Explain how the user should approach this goal."

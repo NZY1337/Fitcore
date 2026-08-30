@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { X } from 'lucide-react';
 import PageMeta from '../../../components/common/PageMeta';
 import Form from '../../../components/form/Form';
 import Input from '../../../components/form/input/InputField';
@@ -8,7 +9,16 @@ import Button from '../../../components/ui/button/Button';
 import { useNutritionLogs } from '../../../hooks/useNutritionLogs';
 import { useFitnessMetrics } from '../../../hooks/useFitnessMetrics';
 import { useAutoDismiss } from '../../../hooks/useAutoDismiss';
+import { useAiMealPlan } from '../../../hooks/useAiMealPlan';
 import type { MealType } from '../../../services/nutrition-logs';
+import type { PlanMeal } from '../../../services/ai-meal-plan';
+
+const PLAN_MEAL_LABELS: Record<string, string> = {
+    breakfast: 'Mic dejun',
+    lunch: 'Prânz',
+    dinner: 'Cină',
+    snack: 'Gustare',
+};
 
 type FormState = {
     food_item: string;
@@ -76,12 +86,36 @@ export default function NutritionLogs() {
     const { fitnessMetrics } = useFitnessMetrics();
     const calorieTarget = fitnessMetrics?.caloriesTarget ?? null;
     const macroTargets = fitnessMetrics?.macros ?? null;
+    const { currentPlan } = useAiMealPlan();
     const [form, setForm] = useState<FormState>(initialForm);
     const [errors, setErrors] = useState<FormErrors>({});
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [showPlanPicker, setShowPlanPicker] = useState(false);
     const [submitMessage, setSubmitMessage] = useAutoDismiss();
     const [submitError, setSubmitError] = useAutoDismiss();
+
+    const activeMeals = useMemo((): PlanMeal[] => {
+        if (!currentPlan) return [];
+        const idx = currentPlan.selected_variant_index ?? 0;
+        return currentPlan.variants[idx]?.meals ?? [];
+    }, [currentPlan]);
+
+    const handlePickFromPlan = (meal: PlanMeal) => {
+        setForm({
+            food_item: meal.name,
+            meal_type: meal.meal_type as MealType,
+            calories: String(meal.totals.calories),
+            protein_g: String(meal.totals.protein),
+            carbs_g: String(meal.totals.carbs),
+            fat_g: String(meal.totals.fat),
+            serving_g: '',
+            note: '',
+        });
+        setErrors({});
+        setEditingId(null);
+        setShowPlanPicker(false);
+    };
 
     const handleEdit = (log: (typeof nutritionLogs)[number]) => {
         setEditingId(log.id);
@@ -283,18 +317,63 @@ export default function NutritionLogs() {
                             <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
                                 {editingId ? 'Edit Entry' : 'Log Food'}
                             </h2>
-                            {editingId && (
+                            {editingId ? (
                                 <button
                                     onClick={handleCancelEdit}
                                     className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                                 >
                                     Cancel
                                 </button>
+                            ) : activeMeals.length > 0 && (
+                                <button
+                                    onClick={() => setShowPlanPicker(true)}
+                                    className="text-sm font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
+                                >
+                                    + Din planul meu
+                                </button>
                             )}
                         </div>
                         <p className="mb-5 text-sm text-gray-500 dark:text-gray-400">
                             {editingId ? 'Update the details of the selected entry.' : 'Add a meal or snack entry.'}
                         </p>
+
+                        {/* Plan picker modal */}
+                        {showPlanPicker && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+                                <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900 shadow-xl">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-base font-bold text-gray-800 dark:text-white/90">Alege o masă din plan</h3>
+                                        <button onClick={() => setShowPlanPicker(false)}>
+                                            <X className="w-5 h-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" />
+                                        </button>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {activeMeals.map((meal, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => handlePickFromPlan(meal)}
+                                                className="w-full text-left rounded-xl border border-gray-100 dark:border-gray-700 px-4 py-3 hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-500/10 transition-colors"
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <span className="text-xs font-bold uppercase text-gray-400 mr-2">
+                                                            {PLAN_MEAL_LABELS[meal.meal_type] ?? meal.meal_type}
+                                                        </span>
+                                                        <span className="text-sm font-semibold text-gray-800 dark:text-white/90">{meal.name}</span>
+                                                    </div>
+                                                    <span className="text-xs font-medium text-brand-600 dark:text-brand-400 shrink-0 ml-2">
+                                                        {meal.totals.calories} kcal
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-gray-400 mt-0.5">
+                                                    P:{meal.totals.protein}g · C:{meal.totals.carbs}g · F:{meal.totals.fat}g
+                                                </p>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         {submitMessage && (
                             <div className="mb-4">

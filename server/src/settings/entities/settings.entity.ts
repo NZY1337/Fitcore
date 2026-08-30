@@ -4,13 +4,20 @@ import {
     Entity,
     PrimaryColumn,
     UpdateDateColumn,
+    OneToOne,
+    JoinColumn,
 } from 'typeorm';
 import type { TrainingGoalSettings } from '../settings.types';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('user_settings')
 export class UserSettings {
     @PrimaryColumn({ type: 'uuid' })
     user_id: string;
+
+    @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({ type: 'jsonb' })
     strength: TrainingGoalSettings;
